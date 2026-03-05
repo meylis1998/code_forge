@@ -1,0 +1,82 @@
+name: code_forge
+description: An open-source macOS LeetCode practice app with offline browsing and code execution.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_bloc: any
+  bloc: any
+  equatable: any
+  bloc_concurrency: any
+  hydrated_bloc: any
+
+  # Dependency Injection
+  get_it: any
+
+  # Network
+  dio: any
+  pretty_dio_logger: any
+  connectivity_plus: any
+
+  # Database
+  drift: any
+  drift_flutter: any
+  sqlite3_flutter_libs: any
+
+  # Storage
+  flutter_secure_storage: any
+  shared_preferences: any
+  path_provider: any
+
+  # Navigation
+  go_router: any
+
+  # Code Editor
+  flutter_code_editor: any
+  flutter_highlight: any
+  highlight: any
+
+  # HTML Rendering
+  flutter_widget_from_html: any
+
+  # Charts
+  fl_chart: any
+
+  # UI
+  google_fonts: any
+  shimmer: any
+  cupertino_icons: any
+
+  # Utils
+  dartz: any
+  rxdart: any
+  json_annotation: any
+  logger: any
+  url_launcher: any
+  intl: any
+
+  # macOS
+  window_manager: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: any
+  bloc_test: any
+  mocktail: any
+  build_runner: any
+  drift_dev: any
+  json_serializable: any
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/
