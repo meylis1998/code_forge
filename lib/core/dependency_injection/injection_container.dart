@@ -162,6 +162,7 @@ Future<void> initDependencies() async {
     ..registerFactory(
       () => ProblemListBloc(
         getProblems: sl<GetProblemsUseCase>(),
+        problemRepository: sl<ProblemRepository>(),
       ),
     );
 

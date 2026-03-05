@@ -138,6 +138,16 @@ class ProblemRepositoryImpl implements ProblemRepository {
   }
 
   @override
+  Future<Either<Failure, void>> toggleFavorite(int problemId) async {
+    try {
+      await localDataSource.toggleFavorite(problemId);
+      return const Right(null);
+    } on CacheException catch (e) {
+      return Left(CacheFailure(message: e.message));
+    }
+  }
+
+  @override
   Future<Either<Failure, void>> seedProblemsFromJson() async {
     try {
       final hasProblems = await localDataSource.hasProblems();

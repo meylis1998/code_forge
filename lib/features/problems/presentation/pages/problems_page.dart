@@ -142,6 +142,11 @@ class ProblemsPage extends StatelessWidget {
                             onTap: () {
                               context.push('/problems/${problem.titleSlug}');
                             },
+                            onFavoriteToggle: () {
+                              context.read<ProblemListBloc>().add(
+                                    ProblemListFavoriteToggled(problem.id),
+                                  );
+                            },
                           );
                         },
                       ),

@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../domain/entities/problem_entity.dart';
 import '../../domain/entities/problem_filter.dart';
+import '../../domain/repositories/problem_repository.dart';
 import '../../domain/usecases/get_problems_usecase.dart';
 
 part 'problem_list_event.dart';
@@ -13,7 +14,9 @@ part 'problem_list_state.dart';
 class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
   ProblemListBloc({
     required GetProblemsUseCase getProblems,
+    required ProblemRepository problemRepository,
   })  : _getProblems = getProblems,
+        _problemRepository = problemRepository,
         super(const ProblemListState()) {
     on<ProblemListFetched>(
       _onFetched,
@@ -27,9 +30,11 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
     on<ProblemListFilterChanged>(_onFilterChanged);
     on<ProblemListLoadMore>(_onLoadMore);
     on<ProblemListRefreshed>(_onRefreshed);
+    on<ProblemListFavoriteToggled>(_onFavoriteToggled);
   }
 
   final GetProblemsUseCase _getProblems;
+  final ProblemRepository _problemRepository;
 
   Future<void> _onFetched(
     ProblemListFetched event,
@@ -145,6 +150,47 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
         ),
       ),
     );
+  }
+
+  Future<void> _onFavoriteToggled(
+    ProblemListFavoriteToggled event,
+    Emitter<ProblemListState> emit,
+  ) async {
+    await _problemRepository.toggleFavorite(event.problemId);
+
+    // Update the problem in the current list
+    final updatedProblems = state.problems.map((p) {
+      if (p.id == event.problemId) {
+        return Problem(
+          id: p.id,
+          frontendId: p.frontendId,
+          title: p.title,
+          titleSlug: p.titleSlug,
+          difficulty: p.difficulty,
+          content: p.content,
+          acRate: p.acRate,
+          isPaidOnly: p.isPaidOnly,
+          status: p.status,
+          likes: p.likes,
+          dislikes: p.dislikes,
+          categoryTitle: p.categoryTitle,
+          hints: p.hints,
+          exampleTestcases: p.exampleTestcases,
+          sampleTestCase: p.sampleTestCase,
+          isFavorite: !p.isFavorite,
+          topicTags: p.topicTags,
+          codeSnippets: p.codeSnippets,
+          similarQuestions: p.similarQuestions,
+          metaData: p.metaData,
+          stats: p.stats,
+          hasSolution: p.hasSolution,
+          hasVideoSolution: p.hasVideoSolution,
+        );
+      }
+      return p;
+    }).toList();
+
+    emit(state.copyWith(problems: updatedProblems));
   }
 
   Future<void> _onRefreshed(

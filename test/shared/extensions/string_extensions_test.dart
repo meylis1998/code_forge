@@ -39,19 +39,19 @@ void main() {
     });
 
     test('isNullOrEmpty returns true for empty string', () {
-      // ignore: unnecessary_nullable_for_final_variable_declarations
+      // ignore: unnecessary_nullable_for_final_variable_declarations -- need String? type to test nullable extension
       const String? val = '';
       expect(val.isNullOrEmpty, true);
     });
 
     test('isNullOrEmpty returns false for non-empty string', () {
-      // ignore: unnecessary_nullable_for_final_variable_declarations
+      // ignore: unnecessary_nullable_for_final_variable_declarations -- need String? type to test nullable extension
       const String? val = 'hello';
       expect(val.isNullOrEmpty, false);
     });
 
     test('isNotNullOrEmpty returns true for non-empty string', () {
-      // ignore: unnecessary_nullable_for_final_variable_declarations
+      // ignore: unnecessary_nullable_for_final_variable_declarations -- need String? type to test nullable extension
       const String? val = 'hello';
       expect(val.isNotNullOrEmpty, true);
     });

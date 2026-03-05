@@ -6,6 +6,7 @@ class ProblemFilter extends Equatable {
     this.status,
     this.searchQuery,
     this.tagSlugs,
+    this.isFavorite = false,
     this.page = 0,
     this.pageSize = 50,
   });
@@ -14,6 +15,7 @@ class ProblemFilter extends Equatable {
   final String? status;
   final String? searchQuery;
   final List<String>? tagSlugs;
+  final bool isFavorite;
   final int page;
   final int pageSize;
 
@@ -22,6 +24,7 @@ class ProblemFilter extends Equatable {
     String? Function()? status,
     String? Function()? searchQuery,
     List<String>? Function()? tagSlugs,
+    bool? isFavorite,
     int? page,
     int? pageSize,
   }) {
@@ -30,6 +33,7 @@ class ProblemFilter extends Equatable {
       status: status != null ? status() : this.status,
       searchQuery: searchQuery != null ? searchQuery() : this.searchQuery,
       tagSlugs: tagSlugs != null ? tagSlugs() : this.tagSlugs,
+      isFavorite: isFavorite ?? this.isFavorite,
       page: page ?? this.page,
       pageSize: pageSize ?? this.pageSize,
     );
@@ -37,5 +41,5 @@ class ProblemFilter extends Equatable {
 
   @override
   List<Object?> get props =>
-      [difficulty, status, searchQuery, tagSlugs, page, pageSize];
+      [difficulty, status, searchQuery, tagSlugs, isFavorite, page, pageSize];
 }

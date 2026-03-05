@@ -28,6 +28,7 @@ class ProblemLocalDataSource {
         status: filter.status,
         searchQuery: filter.searchQuery,
         tagSlugs: filter.tagSlugs,
+        isFavorite: filter.isFavorite ? true : null,
       );
 
       final result = <Problem>[];
@@ -140,6 +141,14 @@ class ProblemLocalDataSource {
       await problemDao.upsertCodeSnippets(companions);
     } catch (e) {
       throw CacheException(message: 'Failed to save code snippets: $e');
+    }
+  }
+
+  Future<void> toggleFavorite(int problemId) async {
+    try {
+      await problemDao.toggleFavorite(problemId);
+    } catch (e) {
+      throw CacheException(message: 'Failed to toggle favorite: $e');
     }
   }
 

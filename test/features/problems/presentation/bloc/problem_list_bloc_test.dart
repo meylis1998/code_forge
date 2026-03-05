@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:code_forge/core/errors/failures.dart';
 import 'package:code_forge/features/problems/domain/entities/problem_entity.dart';
 import 'package:code_forge/features/problems/domain/entities/problem_filter.dart';
+import 'package:code_forge/features/problems/domain/repositories/problem_repository.dart';
 import 'package:code_forge/features/problems/domain/usecases/get_problems_usecase.dart';
 import 'package:code_forge/features/problems/presentation/bloc/problem_list_bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -10,11 +11,14 @@ import 'package:mocktail/mocktail.dart';
 
 class MockGetProblemsUseCase extends Mock implements GetProblemsUseCase {}
 
+class MockProblemRepository extends Mock implements ProblemRepository {}
+
 class FakeProblemFilter extends Fake implements ProblemFilter {}
 
 void main() {
   late ProblemListBloc bloc;
   late MockGetProblemsUseCase mockGetProblems;
+  late MockProblemRepository mockProblemRepository;
 
   setUpAll(() {
     registerFallbackValue(FakeProblemFilter());
@@ -22,7 +26,11 @@ void main() {
 
   setUp(() {
     mockGetProblems = MockGetProblemsUseCase();
-    bloc = ProblemListBloc(getProblems: mockGetProblems);
+    mockProblemRepository = MockProblemRepository();
+    bloc = ProblemListBloc(
+      getProblems: mockGetProblems,
+      problemRepository: mockProblemRepository,
+    );
   });
 
   tearDown(() => bloc.close());

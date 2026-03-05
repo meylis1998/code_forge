@@ -8,11 +8,13 @@ class ProblemListTile extends StatefulWidget {
   const ProblemListTile({
     required this.problem,
     required this.onTap,
+    this.onFavoriteToggle,
     super.key,
   });
 
   final Problem problem;
   final VoidCallback onTap;
+  final VoidCallback? onFavoriteToggle;
 
   @override
   State<ProblemListTile> createState() => _ProblemListTileState();
@@ -112,6 +114,24 @@ class _ProblemListTileState extends State<ProblemListTile> {
               const SizedBox(width: 16),
               // Difficulty badge
               _DifficultyBadge(difficulty: widget.problem.difficulty),
+              const SizedBox(width: 8),
+              // Favorite icon
+              GestureDetector(
+                onTap: widget.onFavoriteToggle,
+                child: Icon(
+                  widget.problem.isFavorite
+                      ? CupertinoIcons.heart_fill
+                      : CupertinoIcons.heart,
+                  size: 16,
+                  color: widget.problem.isFavorite
+                      ? const Color(0xFFFF6B6B)
+                      : Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.color
+                          ?.withValues(alpha: 0.4),
+                ),
+              ),
               const SizedBox(width: 8),
               // Paid icon
               if (widget.problem.isPaidOnly)

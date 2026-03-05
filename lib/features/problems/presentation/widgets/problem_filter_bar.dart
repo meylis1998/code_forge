@@ -58,6 +58,14 @@ class ProblemFilterBar extends StatelessWidget {
             icon: CupertinoIcons.circle_bottomthird_split,
             onTap: () => _toggleStatus('notac'),
           ),
+          const SizedBox(width: 16),
+          _FilterChip(
+            label: 'Favorites',
+            isSelected: filter.isFavorite,
+            color: const Color(0xFFFF6B6B),
+            icon: CupertinoIcons.heart_fill,
+            onTap: _toggleFavorite,
+          ),
           const Spacer(),
           // Clear filters
           if (_hasActiveFilters)
@@ -79,7 +87,7 @@ class ProblemFilterBar extends StatelessWidget {
   }
 
   bool get _hasActiveFilters =>
-      filter.difficulty != null || filter.status != null;
+      filter.difficulty != null || filter.status != null || filter.isFavorite;
 
   void _toggleDifficulty(String difficulty) {
     onFilterChanged(
@@ -98,12 +106,19 @@ class ProblemFilterBar extends StatelessWidget {
     );
   }
 
+  void _toggleFavorite() {
+    onFilterChanged(
+      filter.copyWith(isFavorite: !filter.isFavorite),
+    );
+  }
+
   void _clearFilters() {
     onFilterChanged(
       filter.copyWith(
         difficulty: () => null,
         status: () => null,
         tagSlugs: () => null,
+        isFavorite: false,
       ),
     );
   }

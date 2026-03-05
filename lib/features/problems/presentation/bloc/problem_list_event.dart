@@ -30,3 +30,12 @@ class ProblemListFilterChanged extends ProblemListEvent {
 class ProblemListLoadMore extends ProblemListEvent {}
 
 class ProblemListRefreshed extends ProblemListEvent {}
+
+class ProblemListFavoriteToggled extends ProblemListEvent {
+  const ProblemListFavoriteToggled(this.problemId);
+
+  final int problemId;
+
+  @override
+  List<Object?> get props => [problemId];
+}

@@ -16,4 +16,6 @@ abstract class ProblemRepository {
   Future<Either<Failure, void>> syncProblemsFromRemote();
 
   Future<Either<Failure, void>> seedProblemsFromJson();
+
+  Future<Either<Failure, void>> toggleFavorite(int problemId);
 }

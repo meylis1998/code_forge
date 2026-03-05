@@ -27,6 +27,7 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
     String? status,
     String? searchQuery,
     List<String>? tagSlugs,
+    bool? isFavorite,
     String? orderBy,
     bool ascending = true,
   }) async {
@@ -40,6 +41,11 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
     if (status != null) {
       query = query
         ..where((p) => p.status.equals(status));
+    }
+
+    if (isFavorite == true) {
+      query = query
+        ..where((p) => p.isFavorite.equals(true));
     }
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
@@ -160,6 +166,17 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
     return batch((b) {
       b.insertAllOnConflictUpdate(codeSnippetsTable, snippets);
     });
+  }
+
+  // Toggle favorite
+  Future<void> toggleFavorite(int problemId) async {
+    final problem = await getProblemById(problemId);
+    if (problem != null) {
+      await (update(problemsTable)..where((p) => p.id.equals(problemId)))
+          .write(ProblemsTableCompanion(
+        isFavorite: Value(!problem.isFavorite),
+      ));
+    }
   }
 
   // Watch problems (for reactive UI)
