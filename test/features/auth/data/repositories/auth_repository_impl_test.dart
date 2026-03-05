@@ -29,21 +29,24 @@ void main() {
   const tUser = AuthUser(username: 'testuser', realName: 'Test');
 
   group('getCurrentUser', () {
-    test('should return AuthUser when username exists and session is valid',
-        () async {
-      when(() => mockSecureStorage.getUsername())
-          .thenAnswer((_) async => 'testuser');
-      when(() => mockRemoteDataSource.validateSession('testuser'))
-          .thenAnswer((_) async => tUser);
+    test(
+      'should return AuthUser when username exists and session is valid',
+      () async {
+        when(
+          () => mockSecureStorage.getUsername(),
+        ).thenAnswer((_) async => 'testuser');
+        when(
+          () => mockRemoteDataSource.validateSession('testuser'),
+        ).thenAnswer((_) async => tUser);
 
-      final result = await repository.getCurrentUser();
+        final result = await repository.getCurrentUser();
 
-      expect(result, const Right(tUser));
-    });
+        expect(result, const Right(tUser));
+      },
+    );
 
     test('should return AuthFailure when no username is stored', () async {
-      when(() => mockSecureStorage.getUsername())
-          .thenAnswer((_) async => null);
+      when(() => mockSecureStorage.getUsername()).thenAnswer((_) async => null);
 
       final result = await repository.getCurrentUser();
 
@@ -55,10 +58,12 @@ void main() {
     });
 
     test('should return cached user on NetworkException', () async {
-      when(() => mockSecureStorage.getUsername())
-          .thenAnswer((_) async => 'testuser');
-      when(() => mockRemoteDataSource.validateSession('testuser'))
-          .thenThrow(const NetworkException(message: 'No internet'));
+      when(
+        () => mockSecureStorage.getUsername(),
+      ).thenAnswer((_) async => 'testuser');
+      when(
+        () => mockRemoteDataSource.validateSession('testuser'),
+      ).thenThrow(const NetworkException(message: 'No internet'));
 
       final result = await repository.getCurrentUser();
 
@@ -83,8 +88,9 @@ void main() {
 
   group('isAuthenticated', () {
     test('should delegate to secureStorage', () async {
-      when(() => mockSecureStorage.isAuthenticated)
-          .thenAnswer((_) async => true);
+      when(
+        () => mockSecureStorage.isAuthenticated,
+      ).thenAnswer((_) async => true);
 
       final result = await repository.isAuthenticated();
 

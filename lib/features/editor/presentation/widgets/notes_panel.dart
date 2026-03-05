@@ -91,17 +91,17 @@ class _NotesPanelState extends State<NotesPanel> {
                     Text(
                       'Saving...',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: isDark
-                                ? ColorPalette.darkTextSecondary
-                                : ColorPalette.lightTextSecondary,
-                          ),
+                        color: isDark
+                            ? ColorPalette.darkTextSecondary
+                            : ColorPalette.lightTextSecondary,
+                      ),
                     )
                   else if (state.status == NoteStatus.saved)
                     Text(
                       'Saved',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: ColorPalette.accepted,
-                          ),
+                        color: ColorPalette.accepted,
+                      ),
                     ),
                 ],
               ),
@@ -115,17 +115,16 @@ class _NotesPanelState extends State<NotesPanel> {
                 expands: true,
                 textAlignVertical: TextAlignVertical.top,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontFamily: 'JetBrains Mono',
-                      fontSize: 13,
-                    ),
+                  fontFamily: 'JetBrains Mono',
+                  fontSize: 13,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Write your notes here...',
-                  hintStyle:
-                      Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: isDark
-                                ? ColorPalette.darkTextSecondary
-                                : ColorPalette.lightTextSecondary,
-                          ),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: isDark
+                        ? ColorPalette.darkTextSecondary
+                        : ColorPalette.lightTextSecondary,
+                  ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.all(16),
                 ),

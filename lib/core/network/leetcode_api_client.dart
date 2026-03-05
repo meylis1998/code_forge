@@ -9,8 +9,8 @@ class LeetCodeApiClient {
   LeetCodeApiClient({
     required Dio dio,
     required NetworkInfo networkInfo,
-  })  : _dio = dio,
-        _networkInfo = networkInfo;
+  }) : _dio = dio,
+       _networkInfo = networkInfo;
 
   final Dio _dio;
   final NetworkInfo _networkInfo;

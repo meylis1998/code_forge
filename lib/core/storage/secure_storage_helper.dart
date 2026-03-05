@@ -31,8 +31,7 @@ class SecureStorageHelper {
   Future<void> saveUsername(String username) =>
       _storage.write(key: AppConstants.usernameKey, value: username);
 
-  Future<String?> getUsername() =>
-      _storage.read(key: AppConstants.usernameKey);
+  Future<String?> getUsername() => _storage.read(key: AppConstants.usernameKey);
 
   Future<void> deleteUsername() =>
       _storage.delete(key: AppConstants.usernameKey);

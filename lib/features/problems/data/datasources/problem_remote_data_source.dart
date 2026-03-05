@@ -51,7 +51,8 @@ class ProblemRemoteDataSource {
 
       return questions.map((q) {
         final map = q as Map<String, dynamic>;
-        final topicTags = (map['topicTags'] as List<dynamic>?)
+        final topicTags =
+            (map['topicTags'] as List<dynamic>?)
                 ?.map(
                   (t) => TopicTag(
                     id: (t as Map<String, dynamic>)['id']?.toString() ?? '',
@@ -63,7 +64,8 @@ class ProblemRemoteDataSource {
             [];
 
         return Problem(
-          id: int.tryParse(
+          id:
+              int.tryParse(
                 map['frontendQuestionId']?.toString() ?? '',
               ) ??
               0,
@@ -102,7 +104,8 @@ class ProblemRemoteDataSource {
         throw const ServerException(message: 'Problem not found');
       }
 
-      final topicTags = (question['topicTags'] as List<dynamic>?)
+      final topicTags =
+          (question['topicTags'] as List<dynamic>?)
               ?.map(
                 (t) => TopicTag(
                   id: (t as Map<String, dynamic>)['id']?.toString() ?? '',
@@ -113,7 +116,8 @@ class ProblemRemoteDataSource {
               .toList() ??
           [];
 
-      final codeSnippets = (question['codeSnippets'] as List<dynamic>?)
+      final codeSnippets =
+          (question['codeSnippets'] as List<dynamic>?)
               ?.map(
                 (s) => CodeSnippet(
                   lang: (s as Map<String, dynamic>)['lang'] as String? ?? '',
@@ -149,8 +153,8 @@ class ProblemRemoteDataSource {
         dislikes: question['dislikes'] as int? ?? 0,
         categoryTitle: question['categoryTitle'] as String? ?? '',
         hints: (question['hints'] as List<dynamic>?)?.cast<String>(),
-        exampleTestcases:
-            (question['exampleTestcaseList'] as List<dynamic>?)?.join('\n'),
+        exampleTestcases: (question['exampleTestcaseList'] as List<dynamic>?)
+            ?.join('\n'),
         sampleTestCase: question['sampleTestCase'] as String?,
         topicTags: topicTags,
         codeSnippets: codeSnippets,
@@ -217,22 +221,21 @@ class ProblemRemoteDataSource {
     if (jsonStr == null || jsonStr.isEmpty) return null;
     try {
       final map = json.decode(jsonStr) as Map<String, dynamic>;
-      final params = (map['params'] as List<dynamic>?)
-              ?.map((p) {
-                final pm = p as Map<String, dynamic>;
-                return ParamInfo(
-                  name: pm['name'] as String? ?? '',
-                  type: pm['type'] as String? ?? '',
-                );
-              })
-              .toList() ??
+      final params =
+          (map['params'] as List<dynamic>?)?.map((p) {
+            final pm = p as Map<String, dynamic>;
+            return ParamInfo(
+              name: pm['name'] as String? ?? '',
+              type: pm['type'] as String? ?? '',
+            );
+          }).toList() ??
           [];
 
       return ProblemMetaData(
         name: map['name'] as String?,
         params: params,
-        returnType: (map['return'] as Map<String, dynamic>?)?['type']
-            as String?,
+        returnType:
+            (map['return'] as Map<String, dynamic>?)?['type'] as String?,
       );
     } catch (_) {
       return null;

@@ -15,13 +15,15 @@ class NoteRepositoryImpl implements NoteRepository {
     try {
       final data = await noteDao.getNoteForProblem(problemId);
       if (data == null) return const Right(null);
-      return Right(Note(
-        id: data.id,
-        problemId: data.problemId,
-        content: data.content,
-        updatedAt: data.updatedAt,
-        createdAt: data.createdAt,
-      ));
+      return Right(
+        Note(
+          id: data.id,
+          problemId: data.problemId,
+          content: data.content,
+          updatedAt: data.updatedAt,
+          createdAt: data.createdAt,
+        ),
+      );
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }
@@ -32,13 +34,15 @@ class NoteRepositoryImpl implements NoteRepository {
     try {
       await noteDao.saveNote(problemId, content);
       final data = await noteDao.getNoteForProblem(problemId);
-      return Right(Note(
-        id: data!.id,
-        problemId: data.problemId,
-        content: data.content,
-        updatedAt: data.updatedAt,
-        createdAt: data.createdAt,
-      ));
+      return Right(
+        Note(
+          id: data!.id,
+          problemId: data.problemId,
+          content: data.content,
+          updatedAt: data.updatedAt,
+          createdAt: data.createdAt,
+        ),
+      );
     } catch (e) {
       return Left(CacheFailure(message: e.toString()));
     }

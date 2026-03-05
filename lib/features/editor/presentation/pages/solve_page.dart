@@ -100,8 +100,7 @@ class _SolvePageContent extends StatelessWidget {
                         return Expanded(
                           child: Text(
                             '${problem.frontendId}. ${problem.title}',
-                            style:
-                                Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleMedium,
                             overflow: TextOverflow.ellipsis,
                           ),
                         );
@@ -130,13 +129,11 @@ class _SolvePageContent extends StatelessWidget {
                         );
                       case CodeEditorStatus.error:
                         return AppErrorWidget(
-                          message: state.errorMessage ??
-                              'Failed to load problem',
-                          onRetry: () => context
-                              .read<CodeEditorBloc>()
-                              .add(
-                                CodeEditorLoadProblem(titleSlug),
-                              ),
+                          message:
+                              state.errorMessage ?? 'Failed to load problem',
+                          onRetry: () => context.read<CodeEditorBloc>().add(
+                            CodeEditorLoadProblem(titleSlug),
+                          ),
                         );
                       case CodeEditorStatus.loaded:
                         return SplitView(

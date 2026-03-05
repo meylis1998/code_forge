@@ -17,8 +17,7 @@ class ContestState extends Equatable {
       contests.where((c) => c.isUpcoming || c.isOngoing).toList()
         ..sort((a, b) => a.startTime.compareTo(b.startTime));
 
-  List<Contest> get past =>
-      contests.where((c) => c.isPast).toList();
+  List<Contest> get past => contests.where((c) => c.isPast).toList();
 
   Contest? get nextContest => upcoming.isNotEmpty ? upcoming.first : null;
 

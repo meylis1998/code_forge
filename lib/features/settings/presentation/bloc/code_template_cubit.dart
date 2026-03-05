@@ -8,8 +8,8 @@ part 'code_template_state.dart';
 
 class CodeTemplateCubit extends Cubit<CodeTemplateState> {
   CodeTemplateCubit({required CodeTemplateDao codeTemplateDao})
-      : _codeTemplateDao = codeTemplateDao,
-        super(const CodeTemplateState());
+    : _codeTemplateDao = codeTemplateDao,
+      super(const CodeTemplateState());
 
   final CodeTemplateDao _codeTemplateDao;
 
@@ -27,10 +27,12 @@ class CodeTemplateCubit extends Cubit<CodeTemplateState> {
         )
         .toList();
 
-    emit(state.copyWith(
-      status: CodeTemplateStatus.loaded,
-      templates: templates,
-    ));
+    emit(
+      state.copyWith(
+        status: CodeTemplateStatus.loaded,
+        templates: templates,
+      ),
+    );
   }
 
   Future<void> saveTemplate(String languageSlug, String template) async {

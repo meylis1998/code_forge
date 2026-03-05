@@ -85,9 +85,9 @@ class _CodeTemplateEditorDialogState extends State<CodeTemplateEditorDialog> {
             onPressed: () {
               _controller.clear();
               context.read<CodeTemplateCubit>().saveTemplate(
-                    widget.language.slug,
-                    '',
-                  );
+                widget.language.slug,
+                '',
+              );
               Navigator.pop(context);
             },
             child: const Text('Clear'),
@@ -95,9 +95,9 @@ class _CodeTemplateEditorDialogState extends State<CodeTemplateEditorDialog> {
         FilledButton(
           onPressed: () {
             context.read<CodeTemplateCubit>().saveTemplate(
-                  widget.language.slug,
-                  _controller.text,
-                );
+              widget.language.slug,
+              _controller.text,
+            );
             Navigator.pop(context);
           },
           child: const Text('Save'),

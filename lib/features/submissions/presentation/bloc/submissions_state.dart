@@ -39,11 +39,11 @@ class SubmissionsState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        submissions,
-        hasReachedMax,
-        langFilter,
-        statusFilter,
-        errorMessage,
-      ];
+    status,
+    submissions,
+    hasReachedMax,
+    langFilter,
+    statusFilter,
+    errorMessage,
+  ];
 }

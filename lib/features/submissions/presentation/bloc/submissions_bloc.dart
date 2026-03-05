@@ -10,8 +10,8 @@ part 'submissions_state.dart';
 class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
   SubmissionsBloc({
     required SubmissionDao submissionDao,
-  })  : _submissionDao = submissionDao,
-        super(const SubmissionsState()) {
+  }) : _submissionDao = submissionDao,
+       super(const SubmissionsState()) {
     on<SubmissionsLoaded>(_onLoaded);
     on<SubmissionsLoadMore>(_onLoadMore);
     on<SubmissionsFilterChanged>(_onFilterChanged);
@@ -78,11 +78,13 @@ class SubmissionsBloc extends Bloc<SubmissionsEvent, SubmissionsState> {
     SubmissionsFilterChanged event,
     Emitter<SubmissionsState> emit,
   ) async {
-    emit(state.copyWith(
-      langFilter: event.lang,
-      statusFilter: event.status,
-      status: SubmissionsStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        langFilter: event.lang,
+        statusFilter: event.status,
+        status: SubmissionsStatus.loading,
+      ),
+    );
 
     try {
       final submissions = await _submissionDao.getSubmissions(

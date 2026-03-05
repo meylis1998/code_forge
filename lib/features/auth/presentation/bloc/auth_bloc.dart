@@ -15,10 +15,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required LoginUseCase loginUseCase,
     required GetCurrentUserUseCase getCurrentUserUseCase,
     required LogoutUseCase logoutUseCase,
-  })  : _loginUseCase = loginUseCase,
-        _getCurrentUserUseCase = getCurrentUserUseCase,
-        _logoutUseCase = logoutUseCase,
-        super(AuthInitial()) {
+  }) : _loginUseCase = loginUseCase,
+       _getCurrentUserUseCase = getCurrentUserUseCase,
+       _logoutUseCase = logoutUseCase,
+       super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheck);
     on<AuthLoginRequested>(_onLogin);
     on<AuthLogoutRequested>(_onLogout);

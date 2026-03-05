@@ -10,8 +10,8 @@ part 'contest_state.dart';
 
 class ContestBloc extends Bloc<ContestEvent, ContestState> {
   ContestBloc({required ContestRemoteDataSource remoteDataSource})
-      : _remoteDataSource = remoteDataSource,
-        super(const ContestState()) {
+    : _remoteDataSource = remoteDataSource,
+      super(const ContestState()) {
     on<ContestsLoaded>(_onLoaded);
     on<ContestsRefreshed>(_onRefreshed);
   }
@@ -29,20 +29,26 @@ class ContestBloc extends Bloc<ContestEvent, ContestState> {
       // Sort by start time descending (newest first)
       contests.sort((a, b) => b.startTime.compareTo(a.startTime));
 
-      emit(state.copyWith(
-        status: ContestStatus.loaded,
-        contests: contests,
-      ));
+      emit(
+        state.copyWith(
+          status: ContestStatus.loaded,
+          contests: contests,
+        ),
+      );
     } on AuthException {
-      emit(state.copyWith(
-        status: ContestStatus.error,
-        errorMessage: 'Authentication required to view contests',
-      ));
+      emit(
+        state.copyWith(
+          status: ContestStatus.error,
+          errorMessage: 'Authentication required to view contests',
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: ContestStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: ContestStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 

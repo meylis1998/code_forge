@@ -61,8 +61,11 @@ void main() {
         ),
       ),
       expect: () => [
-        isA<CodeExecutionState>()
-            .having((s) => s.status, 'status', CodeExecutionStatus.running),
+        isA<CodeExecutionState>().having(
+          (s) => s.status,
+          'status',
+          CodeExecutionStatus.running,
+        ),
         isA<CodeExecutionState>()
             .having((s) => s.status, 'status', CodeExecutionStatus.completed)
             .having((s) => s.result, 'result', tResult),
@@ -95,8 +98,11 @@ void main() {
         ),
       ),
       expect: () => [
-        isA<CodeExecutionState>()
-            .having((s) => s.status, 'status', CodeExecutionStatus.running),
+        isA<CodeExecutionState>().having(
+          (s) => s.status,
+          'status',
+          CodeExecutionStatus.running,
+        ),
         isA<CodeExecutionState>()
             .having((s) => s.status, 'status', CodeExecutionStatus.error)
             .having((s) => s.errorMessage, 'errorMessage', 'Timeout'),
@@ -127,8 +133,11 @@ void main() {
         ),
       ),
       expect: () => [
-        isA<CodeExecutionState>()
-            .having((s) => s.status, 'status', CodeExecutionStatus.submitting),
+        isA<CodeExecutionState>().having(
+          (s) => s.status,
+          'status',
+          CodeExecutionStatus.submitting,
+        ),
         isA<CodeExecutionState>()
             .having((s) => s.status, 'status', CodeExecutionStatus.completed)
             .having((s) => s.result, 'result', tResult),

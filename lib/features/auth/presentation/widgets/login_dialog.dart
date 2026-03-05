@@ -67,8 +67,8 @@ class _LoginDialogState extends State<LoginDialog> {
                 '2. Copy LEETCODE_SESSION value\n'
                 '3. Copy csrftoken value',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontFamily: 'monospace',
-                    ),
+                  fontFamily: 'monospace',
+                ),
               ),
               const SizedBox(height: 20),
               TextField(
@@ -140,10 +140,10 @@ class _LoginDialogState extends State<LoginDialog> {
     if (session.isEmpty || csrf.isEmpty) return;
 
     context.read<AuthBloc>().add(
-          AuthLoginRequested(
-            session: session,
-            csrfToken: csrf,
-          ),
-        );
+      AuthLoginRequested(
+        session: session,
+        csrfToken: csrf,
+      ),
+    );
   }
 }

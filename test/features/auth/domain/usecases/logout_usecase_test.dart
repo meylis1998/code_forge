@@ -18,8 +18,9 @@ void main() {
   });
 
   test('should call repository.logout successfully', () async {
-    when(() => mockRepository.logout())
-        .thenAnswer((_) async => const Right(null));
+    when(
+      () => mockRepository.logout(),
+    ).thenAnswer((_) async => const Right(null));
 
     final result = await useCase(NoParams());
 
@@ -29,8 +30,9 @@ void main() {
 
   test('should return failure when logout fails', () async {
     const failure = CacheFailure(message: 'Failed to clear storage');
-    when(() => mockRepository.logout())
-        .thenAnswer((_) async => const Left(failure));
+    when(
+      () => mockRepository.logout(),
+    ).thenAnswer((_) async => const Left(failure));
 
     final result = await useCase(NoParams());
 

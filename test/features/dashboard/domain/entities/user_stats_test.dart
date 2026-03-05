@@ -141,10 +141,16 @@ void main() {
 
   group('TagSkill', () {
     test('supports equality based on tagSlug and problemsSolved', () {
-      const t1 =
-          TagSkill(tagName: 'Array', tagSlug: 'array', problemsSolved: 10);
-      const t2 =
-          TagSkill(tagName: 'Array', tagSlug: 'array', problemsSolved: 10);
+      const t1 = TagSkill(
+        tagName: 'Array',
+        tagSlug: 'array',
+        problemsSolved: 10,
+      );
+      const t2 = TagSkill(
+        tagName: 'Array',
+        tagSlug: 'array',
+        problemsSolved: 10,
+      );
       expect(t1, equals(t2));
     });
   });

@@ -153,20 +153,21 @@ class ProblemLocalDataSource {
   }
 
   Future<bool> hasProblems() async {
-    final count =
-        await problemDao.getProblemsCount();
+    final count = await problemDao.getProblemsCount();
     return count > 0;
   }
 
   Future<void> seedFromJson() async {
     try {
-      final jsonString =
-          await rootBundle.loadString('assets/data/problems.json');
+      final jsonString = await rootBundle.loadString(
+        'assets/data/problems.json',
+      );
       final jsonList = json.decode(jsonString) as List<dynamic>;
 
       final problems = jsonList.map((item) {
         final map = item as Map<String, dynamic>;
-        final tags = (map['topicTags'] as List<dynamic>?)
+        final tags =
+            (map['topicTags'] as List<dynamic>?)
                 ?.map(
                   (t) => TopicTag(
                     id: (t as Map<String, dynamic>)['id'] as String? ?? '',
@@ -178,7 +179,8 @@ class ProblemLocalDataSource {
             [];
 
         return Problem(
-          id: map['questionId'] as int? ??
+          id:
+              map['questionId'] as int? ??
               int.tryParse(map['questionId'].toString()) ??
               0,
           frontendId: map['questionFrontendId']?.toString() ?? '',

@@ -19,12 +19,9 @@ class ProblemsTable extends Table {
   TextColumn get exampleTestcases => text().nullable()();
   TextColumn get sampleTestCase => text().nullable()();
   TextColumn get stats => text().nullable()(); // JSON
-  BoolColumn get isFavorite =>
-      boolean().withDefault(const Constant(false))();
-  DateTimeColumn get lastSynced =>
-      dateTime().nullable()();
-  DateTimeColumn get createdAt =>
-      dateTime().withDefault(currentDateAndTime)();
+  BoolColumn get isFavorite => boolean().withDefault(const Constant(false))();
+  DateTimeColumn get lastSynced => dateTime().nullable()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   @override
   Set<Column> get primaryKey => {id};

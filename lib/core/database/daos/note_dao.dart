@@ -10,9 +10,9 @@ class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   NoteDao(super.db);
 
   Future<NotesTableData?> getNoteForProblem(int problemId) {
-    return (select(notesTable)
-          ..where((n) => n.problemId.equals(problemId)))
-        .getSingleOrNull();
+    return (select(
+      notesTable,
+    )..where((n) => n.problemId.equals(problemId))).getSingleOrNull();
   }
 
   Future<void> saveNote(int problemId, String content) {
@@ -26,15 +26,15 @@ class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   }
 
   Future<void> deleteNote(int problemId) {
-    return (delete(notesTable)
-          ..where((n) => n.problemId.equals(problemId)))
-        .go();
+    return (delete(
+      notesTable,
+    )..where((n) => n.problemId.equals(problemId))).go();
   }
 
   Future<List<NotesTableData>> getAllNotes() {
-    return (select(notesTable)
-          ..orderBy([(n) => OrderingTerm.desc(n.updatedAt)]))
-        .get();
+    return (select(
+      notesTable,
+    )..orderBy([(n) => OrderingTerm.desc(n.updatedAt)])).get();
   }
 
   Future<int> getNotesCount() async {
@@ -45,8 +45,7 @@ class NoteDao extends DatabaseAccessor<AppDatabase> with _$NoteDaoMixin {
   }
 
   Future<Set<int>> getProblemIdsWithNotes() async {
-    final query = selectOnly(notesTable)
-      ..addColumns([notesTable.problemId]);
+    final query = selectOnly(notesTable)..addColumns([notesTable.problemId]);
     final results = await query.get();
     return results.map((r) => r.read(notesTable.problemId)!).toSet();
   }

@@ -43,8 +43,7 @@ class UserStats extends Equatable {
   final SkillStats? skillStats;
   final ContestStats? contestStats;
 
-  double get solveRate =>
-      totalQuestions > 0 ? totalSolved / totalQuestions : 0;
+  double get solveRate => totalQuestions > 0 ? totalSolved / totalQuestions : 0;
 
   @override
   List<Object?> get props => [username, totalSolved, ranking, streak];

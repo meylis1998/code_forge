@@ -35,24 +35,27 @@ void main() {
 
   group('runCode', () {
     test('returns CodeExecutionResult on success', () async {
-      when(() => mockApiClient.runCode(
-            titleSlug: 'two-sum',
-            code: 'code',
-            language: 'python3',
-            testCases: '[2,7,11,15]\n9',
-            questionId: '1',
-          )).thenAnswer((_) async => {'interpret_id': 'interp_123'});
+      when(
+        () => mockApiClient.runCode(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          testCases: '[2,7,11,15]\n9',
+          questionId: '1',
+        ),
+      ).thenAnswer((_) async => {'interpret_id': 'interp_123'});
 
-      when(() => mockApiClient.pollSubmissionResult('interp_123'))
-          .thenAnswer((_) async => {
-                'state': 'SUCCESS',
-                'status_code': 10,
-                'status_msg': 'Accepted',
-                'status_runtime': '40 ms',
-                'status_memory': '16.5 MB',
-                'total_correct': 3,
-                'total_testcases': 3,
-              });
+      when(() => mockApiClient.pollSubmissionResult('interp_123')).thenAnswer(
+        (_) async => {
+          'state': 'SUCCESS',
+          'status_code': 10,
+          'status_msg': 'Accepted',
+          'status_runtime': '40 ms',
+          'status_memory': '16.5 MB',
+          'total_correct': 3,
+          'total_testcases': 3,
+        },
+      );
 
       final result = await repository.runCode(
         titleSlug: 'two-sum',
@@ -74,13 +77,15 @@ void main() {
     });
 
     test('returns ServerFailure when no interpret_id', () async {
-      when(() => mockApiClient.runCode(
-            titleSlug: 'two-sum',
-            code: 'code',
-            language: 'python3',
-            testCases: 'test',
-            questionId: '1',
-          )).thenAnswer((_) async => {});
+      when(
+        () => mockApiClient.runCode(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          testCases: 'test',
+          questionId: '1',
+        ),
+      ).thenAnswer((_) async => {});
 
       final result = await repository.runCode(
         titleSlug: 'two-sum',
@@ -98,13 +103,15 @@ void main() {
     });
 
     test('returns AuthFailure on AuthException', () async {
-      when(() => mockApiClient.runCode(
-            titleSlug: 'two-sum',
-            code: 'code',
-            language: 'python3',
-            testCases: 'test',
-            questionId: '1',
-          )).thenThrow(const AuthException(message: 'Session expired'));
+      when(
+        () => mockApiClient.runCode(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          testCases: 'test',
+          questionId: '1',
+        ),
+      ).thenThrow(const AuthException(message: 'Session expired'));
 
       final result = await repository.runCode(
         titleSlug: 'two-sum',
@@ -122,13 +129,15 @@ void main() {
     });
 
     test('returns NetworkFailure on NetworkException', () async {
-      when(() => mockApiClient.runCode(
-            titleSlug: 'two-sum',
-            code: 'code',
-            language: 'python3',
-            testCases: 'test',
-            questionId: '1',
-          )).thenThrow(const NetworkException(message: 'No internet'));
+      when(
+        () => mockApiClient.runCode(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          testCases: 'test',
+          questionId: '1',
+        ),
+      ).thenThrow(const NetworkException(message: 'No internet'));
 
       final result = await repository.runCode(
         titleSlug: 'two-sum',
@@ -147,52 +156,60 @@ void main() {
   });
 
   group('submitCode', () {
-    test('returns CodeExecutionResult and saves submission on success',
-        () async {
-      when(() => mockApiClient.submitSolution(
+    test(
+      'returns CodeExecutionResult and saves submission on success',
+      () async {
+        when(
+          () => mockApiClient.submitSolution(
             titleSlug: 'two-sum',
             code: 'code',
             language: 'python3',
             questionId: '1',
-          )).thenAnswer((_) async => {'submission_id': 12345});
+          ),
+        ).thenAnswer((_) async => {'submission_id': 12345});
 
-      when(() => mockApiClient.pollSubmissionResult('12345'))
-          .thenAnswer((_) async => {
-                'state': 'SUCCESS',
-                'status_code': 10,
-                'status_msg': 'Accepted',
-                'status_runtime': '40 ms',
-                'status_memory': '16.5 MB',
-              });
+        when(() => mockApiClient.pollSubmissionResult('12345')).thenAnswer(
+          (_) async => {
+            'state': 'SUCCESS',
+            'status_code': 10,
+            'status_msg': 'Accepted',
+            'status_runtime': '40 ms',
+            'status_memory': '16.5 MB',
+          },
+        );
 
-      when(() => mockSubmissionDao.insertSubmission(any()))
-          .thenAnswer((_) async {});
+        when(
+          () => mockSubmissionDao.insertSubmission(any()),
+        ).thenAnswer((_) async {});
 
-      final result = await repository.submitCode(
-        titleSlug: 'two-sum',
-        code: 'code',
-        language: 'python3',
-        questionId: '1',
-      );
+        final result = await repository.submitCode(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          questionId: '1',
+        );
 
-      expect(result, isA<Right>());
-      result.fold(
-        (_) => fail('Should be Right'),
-        (r) {
-          expect(r.isAccepted, true);
-          expect(r.submissionId, '12345');
-        },
-      );
-      verify(() => mockSubmissionDao.insertSubmission(any())).called(1);
-    });
+        expect(result, isA<Right>());
+        result.fold(
+          (_) => fail('Should be Right'),
+          (r) {
+            expect(r.isAccepted, true);
+            expect(r.submissionId, '12345');
+          },
+        );
+        verify(() => mockSubmissionDao.insertSubmission(any())).called(1);
+      },
+    );
 
     test('returns ServerFailure when no submission_id', () async {
-      when(() => mockApiClient.submitSolution(
-            titleSlug: 'two-sum',
-            code: 'code',
-            language: 'python3',
-            questionId: '1',
-          )).thenAnswer((_) async => {});
+      when(
+        () => mockApiClient.submitSolution(
+          titleSlug: 'two-sum',
+          code: 'code',
+          language: 'python3',
+          questionId: '1',
+        ),
+      ).thenAnswer((_) async => {});
 
       final result = await repository.submitCode(
         titleSlug: 'two-sum',

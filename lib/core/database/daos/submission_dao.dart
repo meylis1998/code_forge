@@ -37,8 +37,7 @@ class SubmissionDao extends DatabaseAccessor<AppDatabase>
     }
 
     if (statusDisplay != null) {
-      query = query
-        ..where((s) => s.statusDisplay.equals(statusDisplay));
+      query = query..where((s) => s.statusDisplay.equals(statusDisplay));
     }
 
     query

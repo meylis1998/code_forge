@@ -40,6 +40,13 @@ class ProblemFilter extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [difficulty, status, searchQuery, tagSlugs, isFavorite, page, pageSize];
+  List<Object?> get props => [
+    difficulty,
+    status,
+    searchQuery,
+    tagSlugs,
+    isFavorite,
+    page,
+    pageSize,
+  ];
 }

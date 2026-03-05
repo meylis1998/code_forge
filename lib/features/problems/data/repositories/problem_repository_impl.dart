@@ -56,8 +56,9 @@ class ProblemRepositoryImpl implements ProblemRepository {
       // Fetch from remote if we don't have content
       if (await networkInfo.isConnected) {
         try {
-          final remoteProblem =
-              await remoteDataSource.getProblemDetail(titleSlug);
+          final remoteProblem = await remoteDataSource.getProblemDetail(
+            titleSlug,
+          );
 
           // Cache locally
           await localDataSource.saveProblems([remoteProblem]);

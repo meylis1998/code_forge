@@ -11,15 +11,15 @@ class CodeTemplateDao extends DatabaseAccessor<AppDatabase>
   CodeTemplateDao(super.db);
 
   Future<CodeTemplatesTableData?> getTemplate(String languageSlug) {
-    return (select(codeTemplatesTable)
-          ..where((t) => t.languageSlug.equals(languageSlug)))
-        .getSingleOrNull();
+    return (select(
+      codeTemplatesTable,
+    )..where((t) => t.languageSlug.equals(languageSlug))).getSingleOrNull();
   }
 
   Future<List<CodeTemplatesTableData>> getAllTemplates() {
-    return (select(codeTemplatesTable)
-          ..orderBy([(t) => OrderingTerm.asc(t.languageSlug)]))
-        .get();
+    return (select(
+      codeTemplatesTable,
+    )..orderBy([(t) => OrderingTerm.asc(t.languageSlug)])).get();
   }
 
   Future<void> saveTemplate(String languageSlug, String template) {
@@ -33,8 +33,8 @@ class CodeTemplateDao extends DatabaseAccessor<AppDatabase>
   }
 
   Future<void> deleteTemplate(String languageSlug) {
-    return (delete(codeTemplatesTable)
-          ..where((t) => t.languageSlug.equals(languageSlug)))
-        .go();
+    return (delete(
+      codeTemplatesTable,
+    )..where((t) => t.languageSlug.equals(languageSlug))).go();
   }
 }

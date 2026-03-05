@@ -14,10 +14,8 @@ class UserProgressTable extends Table {
   IntColumn get ranking => integer().withDefault(const Constant(0))();
   IntColumn get reputation => integer().withDefault(const Constant(0))();
   IntColumn get streak => integer().withDefault(const Constant(0))();
-  IntColumn get totalActiveDays =>
-      integer().withDefault(const Constant(0))();
+  IntColumn get totalActiveDays => integer().withDefault(const Constant(0))();
   TextColumn get submissionCalendar =>
       text().nullable()(); // JSON string from API
-  DateTimeColumn get lastSynced =>
-      dateTime().withDefault(currentDateAndTime)();
+  DateTimeColumn get lastSynced => dateTime().withDefault(currentDateAndTime)();
 }

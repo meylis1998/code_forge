@@ -8,8 +8,8 @@ part 'solution_state.dart';
 
 class SolutionCubit extends Cubit<SolutionState> {
   SolutionCubit({required ProblemRepository problemRepository})
-      : _problemRepository = problemRepository,
-        super(const SolutionState());
+    : _problemRepository = problemRepository,
+      super(const SolutionState());
 
   final ProblemRepository _problemRepository;
 
@@ -19,14 +19,18 @@ class SolutionCubit extends Cubit<SolutionState> {
     final result = await _problemRepository.getSolution(titleSlug);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: SolutionStatus.error,
-        errorMessage: failure.message,
-      )),
-      (solution) => emit(state.copyWith(
-        status: SolutionStatus.loaded,
-        solution: solution,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: SolutionStatus.error,
+          errorMessage: failure.message,
+        ),
+      ),
+      (solution) => emit(
+        state.copyWith(
+          status: SolutionStatus.loaded,
+          solution: solution,
+        ),
+      ),
     );
   }
 }

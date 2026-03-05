@@ -24,8 +24,9 @@ void main() {
   ];
 
   test('should return tags from repository', () async {
-    when(() => mockRepository.getAllTags())
-        .thenAnswer((_) async => const Right(tTags));
+    when(
+      () => mockRepository.getAllTags(),
+    ).thenAnswer((_) async => const Right(tTags));
 
     final result = await useCase(NoParams());
 
@@ -34,10 +35,11 @@ void main() {
   });
 
   test('should return failure when repository fails', () async {
-    when(() => mockRepository.getAllTags())
-        .thenAnswer((_) async => const Left(
-              CacheFailure(message: 'DB error'),
-            ));
+    when(() => mockRepository.getAllTags()).thenAnswer(
+      (_) async => const Left(
+        CacheFailure(message: 'DB error'),
+      ),
+    );
 
     final result = await useCase(NoParams());
 

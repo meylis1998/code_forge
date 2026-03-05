@@ -59,8 +59,7 @@ class SubmissionsPage extends StatelessWidget {
                             const SizedBox(height: 16),
                             Text(
                               'No submissions yet',
-                              style:
-                                  Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const SizedBox(height: 8),
                             Text(
@@ -75,12 +74,10 @@ class SubmissionsPage extends StatelessWidget {
                     return ListView.separated(
                       padding: const EdgeInsets.all(16),
                       itemCount: state.submissions.length,
-                      separatorBuilder: (_, _) =>
-                          const SizedBox(height: 8),
+                      separatorBuilder: (_, _) => const SizedBox(height: 8),
                       itemBuilder: (context, index) {
                         final sub = state.submissions[index];
-                        final isAccepted =
-                            sub.statusDisplay == 'Accepted';
+                        final isAccepted = sub.statusDisplay == 'Accepted';
                         final date = DateTime.fromMillisecondsSinceEpoch(
                           sub.timestamp * 1000,
                         );
@@ -92,10 +89,8 @@ class SubmissionsPage extends StatelessWidget {
                               children: [
                                 Icon(
                                   isAccepted
-                                      ? CupertinoIcons
-                                          .checkmark_circle_fill
-                                      : CupertinoIcons
-                                          .xmark_circle_fill,
+                                      ? CupertinoIcons.checkmark_circle_fill
+                                      : CupertinoIcons.xmark_circle_fill,
                                   color: isAccepted
                                       ? ColorPalette.accepted
                                       : ColorPalette.wrongAnswer,
@@ -147,9 +142,9 @@ class SubmissionsPage extends StatelessWidget {
                                         ),
                                         Text(
                                           'Runtime',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.labelSmall,
                                         ),
                                       ],
                                     ),
@@ -172,19 +167,16 @@ class SubmissionsPage extends StatelessWidget {
                                         ),
                                         Text(
                                           'Memory',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall,
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.labelSmall,
                                         ),
                                       ],
                                     ),
                                   ),
                                 Text(
-                                  DateFormat('MMM d, yyyy')
-                                      .format(date),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall,
+                                  DateFormat('MMM d, yyyy').format(date),
+                                  style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
                             ),

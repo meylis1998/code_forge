@@ -78,11 +78,11 @@ class _Sidebar extends StatelessWidget {
                 Text(
                   AppConstants.appName,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isDark
-                            ? ColorPalette.darkTextPrimary
-                            : ColorPalette.lightTextPrimary,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: isDark
+                        ? ColorPalette.darkTextPrimary
+                        : ColorPalette.lightTextPrimary,
+                  ),
                 ),
               ],
             ),
@@ -176,8 +176,8 @@ class _SidebarItemState extends State<_SidebarItem> {
             color: widget.isSelected
                 ? selectedColor.withValues(alpha: 0.15)
                 : _isHovered
-                    ? hoverBg
-                    : Colors.transparent,
+                ? hoverBg
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(

@@ -21,8 +21,9 @@ void main() {
   setUp(() {
     mockGetProblemDetail = MockGetProblemDetailUseCase();
     mockCodeTemplateDao = MockCodeTemplateDao();
-    when(() => mockCodeTemplateDao.getTemplate(any()))
-        .thenAnswer((_) async => null);
+    when(
+      () => mockCodeTemplateDao.getTemplate(any()),
+    ).thenAnswer((_) async => null);
     bloc = CodeEditorBloc(
       getProblemDetail: mockGetProblemDetail,
       codeTemplateDao: mockCodeTemplateDao,
@@ -43,7 +44,8 @@ void main() {
       CodeSnippet(
         lang: 'Python3',
         langSlug: 'python3',
-        code: 'class Solution:\n    def twoSum(self, nums, target):\n        pass',
+        code:
+            'class Solution:\n    def twoSum(self, nums, target):\n        pass',
       ),
       CodeSnippet(
         lang: 'C++',
@@ -62,8 +64,9 @@ void main() {
     blocTest<CodeEditorBloc, CodeEditorState>(
       'emits [loading, loaded] with problem data on success',
       build: () {
-        when(() => mockGetProblemDetail(any()))
-            .thenAnswer((_) async => const Right(tProblem));
+        when(
+          () => mockGetProblemDetail(any()),
+        ).thenAnswer((_) async => const Right(tProblem));
         return bloc;
       },
       act: (bloc) => bloc.add(const CodeEditorLoadProblem('two-sum')),

@@ -52,8 +52,9 @@ class DashboardPage extends StatelessWidget {
                                 vertical: 2,
                               ),
                               decoration: BoxDecoration(
-                                color: ColorPalette.accent
-                                    .withValues(alpha: 0.15),
+                                color: ColorPalette.accent.withValues(
+                                  alpha: 0.15,
+                                ),
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
@@ -91,11 +92,9 @@ class DashboardPage extends StatelessWidget {
                         Icon(
                           CupertinoIcons.chart_bar_square,
                           size: 64,
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodySmall
-                              ?.color
-                              ?.withValues(alpha: 0.3),
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.3),
                         ),
                         const SizedBox(height: 16),
                         Text(
@@ -317,11 +316,10 @@ class _StatCard extends StatelessWidget {
               children: [
                 Text(
                   value,
-                  style:
-                      Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: color,
-                          ),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
                 ),
                 if (subtitle.isNotEmpty) ...[
                   const SizedBox(width: 4),
@@ -421,8 +419,7 @@ class _DifficultyChart extends StatelessWidget {
                       _LegendItem(
                         color: ColorPalette.medium,
                         label: 'Medium',
-                        value:
-                            '${stats.mediumSolved}/${stats.mediumTotal}',
+                        value: '${stats.mediumSolved}/${stats.mediumTotal}',
                       ),
                       const SizedBox(height: 12),
                       _LegendItem(
@@ -471,8 +468,8 @@ class _LegendItem extends StatelessWidget {
         Text(
           value,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ],
     );
@@ -512,15 +509,17 @@ class _DailyChallengeCard extends StatelessWidget {
             Text(
               '${challenge.frontendId}. ${challenge.title}',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 8),
             Row(
               children: [
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: diffColor.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(4),
@@ -555,17 +554,16 @@ class _DailyChallengeCard extends StatelessWidget {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceContainerHighest,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
                           tag,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall
-                              ?.copyWith(fontSize: 10),
+                          style: Theme.of(
+                            context,
+                          ).textTheme.labelSmall?.copyWith(fontSize: 10),
                         ),
                       ),
                     )
@@ -624,9 +622,7 @@ class _ContestCard extends StatelessWidget {
                     children: [
                       Text(
                         contestStats.rating.toStringAsFixed(0),
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
+                        style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: ColorPalette.primary,
@@ -644,9 +640,7 @@ class _ContestCard extends StatelessWidget {
                     children: [
                       Text(
                         '${contestStats.attendedContestsCount}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
+                        style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
@@ -663,9 +657,7 @@ class _ContestCard extends StatelessWidget {
                         contestStats.globalRanking > 0
                             ? '#${contestStats.globalRanking}'
                             : '-',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
+                        style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       Text(
@@ -683,9 +675,9 @@ class _ContestCard extends StatelessWidget {
                 child: Text(
                   'Top ${contestStats.topPercentage.toStringAsFixed(1)}%',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorPalette.accepted,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    color: ColorPalette.accepted,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
@@ -746,9 +738,9 @@ class _LanguageStatsCard extends StatelessWidget {
                     Expanded(
                       child: LinearProgressIndicator(
                         value: lang.problemsSolved / maxSolved,
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .surfaceContainerHighest,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         color: ColorPalette.primary,
                         minHeight: 6,
                         borderRadius: BorderRadius.circular(3),
@@ -759,10 +751,9 @@ class _LanguageStatsCard extends StatelessWidget {
                       width: 32,
                       child: Text(
                         '${lang.problemsSolved}',
-                        style:
-                            Theme.of(context).textTheme.bodySmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                         textAlign: TextAlign.right,
                       ),
                     ),
@@ -828,8 +819,7 @@ class _SkillBreakdownCard extends StatelessWidget {
               ),
             ],
             if (hasAdvanced) ...[
-              if (hasFundamental || hasIntermediate)
-                const SizedBox(height: 12),
+              if (hasFundamental || hasIntermediate) const SizedBox(height: 12),
               _SkillSection(
                 label: 'Advanced',
                 color: ColorPalette.hard,
@@ -862,9 +852,9 @@ class _SkillSection extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
+            color: color,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -873,8 +863,10 @@ class _SkillSection extends StatelessWidget {
           children: skills
               .map(
                 (skill) => Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4),

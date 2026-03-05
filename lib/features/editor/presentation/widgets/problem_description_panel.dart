@@ -66,8 +66,9 @@ class ProblemDescriptionPanel extends StatelessWidget {
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: ColorPalette.primary
-                                  .withValues(alpha: 0.1),
+                              color: ColorPalette.primary.withValues(
+                                alpha: 0.1,
+                              ),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
@@ -128,8 +129,8 @@ class ProblemDescriptionPanel extends StatelessWidget {
               Tab(text: 'Notes'),
             ],
             labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+              fontWeight: FontWeight.w600,
+            ),
             unselectedLabelStyle: Theme.of(context).textTheme.bodySmall,
             indicatorSize: TabBarIndicatorSize.label,
             dividerHeight: 1,
@@ -147,8 +148,7 @@ class ProblemDescriptionPanel extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     child: HtmlWidget(
                       problem.content!,
-                      textStyle:
-                          Theme.of(context).textTheme.bodyMedium,
+                      textStyle: Theme.of(context).textTheme.bodyMedium,
                     ),
                   )
                 else
@@ -166,14 +166,12 @@ class ProblemDescriptionPanel extends StatelessWidget {
                         const SizedBox(height: 16),
                         Text(
                           'Problem description not available',
-                          style:
-                              Theme.of(context).textTheme.titleMedium,
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Connect your LeetCode account to view details',
-                          style:
-                              Theme.of(context).textTheme.bodySmall,
+                          style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
                     ),
@@ -240,9 +238,9 @@ class _SolutionTabState extends State<_SolutionTab> {
                   ),
                   const SizedBox(height: 8),
                   TextButton(
-                    onPressed: () => context
-                        .read<SolutionCubit>()
-                        .loadSolution(widget.titleSlug),
+                    onPressed: () => context.read<SolutionCubit>().loadSolution(
+                      widget.titleSlug,
+                    ),
                     child: const Text('Retry'),
                   ),
                 ],

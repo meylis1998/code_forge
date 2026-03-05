@@ -108,15 +108,13 @@ class CodeExecutionRepositoryImpl implements CodeExecutionRepository {
       statusMessage: data['status_msg'] as String?,
       statusRuntime: data['status_runtime'] as String?,
       statusMemory: data['status_memory'] as String?,
-      runtimePercentile:
-          (data['runtime_percentile'] as num?)?.toDouble(),
-      memoryPercentile:
-          (data['memory_percentile'] as num?)?.toDouble(),
+      runtimePercentile: (data['runtime_percentile'] as num?)?.toDouble(),
+      memoryPercentile: (data['memory_percentile'] as num?)?.toDouble(),
       totalCorrect: data['total_correct'] as int?,
       totalTestcases: data['total_testcases'] as int?,
       codeAnswer: (data['code_answer'] as List<dynamic>?)?.cast<String>(),
-      expectedAnswer:
-          (data['expected_code_answer'] as List<dynamic>?)?.cast<String>(),
+      expectedAnswer: (data['expected_code_answer'] as List<dynamic>?)
+          ?.cast<String>(),
       compileError: data['compile_error'] as String?,
       runtimeError: data['runtime_error'] as String?,
       lastTestcase: data['last_testcase'] as String?,

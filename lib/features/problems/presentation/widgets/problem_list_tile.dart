@@ -36,8 +36,8 @@ class _ProblemListTileState extends State<ProblemListTile> {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           color: _isHovered
               ? (isDark
-                  ? Colors.white.withValues(alpha: 0.03)
-                  : Colors.black.withValues(alpha: 0.02))
+                    ? Colors.white.withValues(alpha: 0.03)
+                    : Colors.black.withValues(alpha: 0.02))
               : Colors.transparent,
           child: Row(
             children: [
@@ -53,8 +53,8 @@ class _ProblemListTileState extends State<ProblemListTile> {
                 child: Text(
                   widget.problem.frontendId,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               const SizedBox(width: 12),
@@ -63,8 +63,8 @@ class _ProblemListTileState extends State<ProblemListTile> {
                 child: Text(
                   widget.problem.title,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+                    fontWeight: FontWeight.w500,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -91,10 +91,9 @@ class _ProblemListTileState extends State<ProblemListTile> {
                             ),
                             child: Text(
                               tag.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(fontSize: 10),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(fontSize: 10),
                             ),
                           ),
                         )
@@ -125,11 +124,9 @@ class _ProblemListTileState extends State<ProblemListTile> {
                   size: 16,
                   color: widget.problem.isFavorite
                       ? const Color(0xFFFF6B6B)
-                      : Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.color
-                          ?.withValues(alpha: 0.4),
+                      : Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.color?.withValues(alpha: 0.4),
                 ),
               ),
               const SizedBox(width: 8),

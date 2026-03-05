@@ -11,8 +11,8 @@ part 'dashboard_state.dart';
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc({
     required DashboardRemoteDataSource remoteDataSource,
-  })  : _remoteDataSource = remoteDataSource,
-        super(const DashboardState()) {
+  }) : _remoteDataSource = remoteDataSource,
+       super(const DashboardState()) {
     on<DashboardLoaded>(_onLoaded);
     on<DashboardRefreshed>(_onRefreshed);
   }
@@ -36,13 +36,13 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       SkillStats? skillStats;
 
       try {
-        contestStats =
-            await _remoteDataSource.getContestStats(event.username);
+        contestStats = await _remoteDataSource.getContestStats(event.username);
       } catch (_) {}
 
       try {
-        languageStats =
-            await _remoteDataSource.getLanguageStats(event.username);
+        languageStats = await _remoteDataSource.getLanguageStats(
+          event.username,
+        );
       } catch (_) {}
 
       try {
@@ -60,9 +60,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         ),
       );
     } on AuthException {
-      emit(state.copyWith(
-        status: DashboardStatus.unauthenticated,
-      ));
+      emit(
+        state.copyWith(
+          status: DashboardStatus.unauthenticated,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

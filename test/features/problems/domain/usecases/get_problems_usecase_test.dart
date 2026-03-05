@@ -37,8 +37,9 @@ void main() {
   ];
 
   test('should return list of problems from repository', () async {
-    when(() => mockRepository.getProblems(tFilter))
-        .thenAnswer((_) async => Right(tProblems));
+    when(
+      () => mockRepository.getProblems(tFilter),
+    ).thenAnswer((_) async => Right(tProblems));
 
     final result = await useCase(tFilter);
 
@@ -48,8 +49,9 @@ void main() {
 
   test('should return failure when repository fails', () async {
     const failure = ServerFailure(message: 'DB error');
-    when(() => mockRepository.getProblems(tFilter))
-        .thenAnswer((_) async => const Left(failure));
+    when(
+      () => mockRepository.getProblems(tFilter),
+    ).thenAnswer((_) async => const Left(failure));
 
     final result = await useCase(tFilter);
 

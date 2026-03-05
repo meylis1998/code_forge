@@ -35,19 +35,18 @@ class DashboardRemoteDataSource {
           submitStats['acSubmissionNum'] as List<dynamic>? ?? [];
       final calendar =
           matchedUser['userCalendar'] as Map<String, dynamic>? ?? {};
-      final profile =
-          matchedUser['profile'] as Map<String, dynamic>? ?? {};
+      final profile = matchedUser['profile'] as Map<String, dynamic>? ?? {};
 
       // Parse submission calendar
-      final calendarJson =
-          calendar['submissionCalendar'] as String? ?? '{}';
-      final calendarMap =
-          (json.decode(calendarJson) as Map<String, dynamic>).map(
-        (key, value) => MapEntry(key, (value as num).toInt()),
-      );
+      final calendarJson = calendar['submissionCalendar'] as String? ?? '{}';
+      final calendarMap = (json.decode(calendarJson) as Map<String, dynamic>)
+          .map(
+            (key, value) => MapEntry(key, (value as num).toInt()),
+          );
 
       // Parse active years
-      final activeYears = (calendar['activeYears'] as List<dynamic>?)
+      final activeYears =
+          (calendar['activeYears'] as List<dynamic>?)
               ?.map((y) => (y as num).toInt())
               .toList() ??
           [];
@@ -84,15 +83,16 @@ class DashboardRemoteDataSource {
       );
 
       final data = response['data'] as Map<String, dynamic>?;
-      final challenge = data?['activeDailyCodingChallengeQuestion']
-          as Map<String, dynamic>?;
+      final challenge =
+          data?['activeDailyCodingChallengeQuestion'] as Map<String, dynamic>?;
 
       if (challenge == null) {
         throw const ServerException(message: 'No daily challenge found');
       }
 
       final question = challenge['question'] as Map<String, dynamic>? ?? {};
-      final tags = (question['topicTags'] as List<dynamic>?)
+      final tags =
+          (question['topicTags'] as List<dynamic>?)
               ?.map((t) => (t as Map<String, dynamic>)['name'] as String? ?? '')
               .where((t) => t.isNotEmpty)
               .toList() ??
@@ -138,28 +138,28 @@ class DashboardRemoteDataSource {
       final history = historyList
           .where((h) => (h as Map<String, dynamic>)['attended'] == true)
           .map((h) {
-        final map = h as Map<String, dynamic>;
-        final contest = map['contest'] as Map<String, dynamic>? ?? {};
-        return ContestRecord(
-          contestTitle: contest['title'] as String? ?? '',
-          contestStartTime: contest['startTime'] as int? ?? 0,
-          attended: map['attended'] as bool? ?? false,
-          problemsSolved: map['problemsSolved'] as int? ?? 0,
-          totalProblems: map['totalProblems'] as int? ?? 0,
-          finishTimeInSeconds: map['finishTimeInSeconds'] as int? ?? 0,
-          rating: (map['rating'] as num?)?.toDouble() ?? 0,
-          ranking: map['ranking'] as int? ?? 0,
-          trendDirection: map['trendDirection'] as String?,
-        );
-      }).toList();
+            final map = h as Map<String, dynamic>;
+            final contest = map['contest'] as Map<String, dynamic>? ?? {};
+            return ContestRecord(
+              contestTitle: contest['title'] as String? ?? '',
+              contestStartTime: contest['startTime'] as int? ?? 0,
+              attended: map['attended'] as bool? ?? false,
+              problemsSolved: map['problemsSolved'] as int? ?? 0,
+              totalProblems: map['totalProblems'] as int? ?? 0,
+              finishTimeInSeconds: map['finishTimeInSeconds'] as int? ?? 0,
+              rating: (map['rating'] as num?)?.toDouble() ?? 0,
+              ranking: map['ranking'] as int? ?? 0,
+              trendDirection: map['trendDirection'] as String?,
+            );
+          })
+          .toList();
 
       if (ranking == null) {
         return ContestStats(history: history);
       }
 
       return ContestStats(
-        attendedContestsCount:
-            ranking['attendedContestsCount'] as int? ?? 0,
+        attendedContestsCount: ranking['attendedContestsCount'] as int? ?? 0,
         rating: (ranking['rating'] as num?)?.toDouble() ?? 0,
         globalRanking: ranking['globalRanking'] as int? ?? 0,
         totalParticipants: ranking['totalParticipants'] as int? ?? 0,

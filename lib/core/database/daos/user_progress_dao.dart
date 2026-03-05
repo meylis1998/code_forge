@@ -12,9 +12,9 @@ class UserProgressDao extends DatabaseAccessor<AppDatabase>
 
   // Get user progress
   Future<UserProgressTableData?> getUserProgress(String username) {
-    return (select(userProgressTable)
-          ..where((u) => u.username.equals(username)))
-        .getSingleOrNull();
+    return (select(
+      userProgressTable,
+    )..where((u) => u.username.equals(username))).getSingleOrNull();
   }
 
   // Upsert user progress
@@ -24,15 +24,15 @@ class UserProgressDao extends DatabaseAccessor<AppDatabase>
 
   // Watch user progress
   Stream<UserProgressTableData?> watchUserProgress(String username) {
-    return (select(userProgressTable)
-          ..where((u) => u.username.equals(username)))
-        .watchSingleOrNull();
+    return (select(
+      userProgressTable,
+    )..where((u) => u.username.equals(username))).watchSingleOrNull();
   }
 
   // Delete user progress
   Future<void> deleteUserProgress(String username) {
-    return (delete(userProgressTable)
-          ..where((u) => u.username.equals(username)))
-        .go();
+    return (delete(
+      userProgressTable,
+    )..where((u) => u.username.equals(username))).go();
   }
 }

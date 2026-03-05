@@ -48,9 +48,9 @@ class ProblemsPage extends StatelessWidget {
                     placeholder: 'Search problems...',
                     style: Theme.of(context).textTheme.bodyMedium,
                     onChanged: (value) {
-                      context
-                          .read<ProblemListBloc>()
-                          .add(ProblemListSearchChanged(value));
+                      context.read<ProblemListBloc>().add(
+                        ProblemListSearchChanged(value),
+                      );
                     },
                   ),
                 ),
@@ -59,15 +59,14 @@ class ProblemsPage extends StatelessWidget {
           ),
           // Filter bar
           BlocBuilder<ProblemListBloc, ProblemListState>(
-            buildWhen: (previous, current) =>
-                previous.filter != current.filter,
+            buildWhen: (previous, current) => previous.filter != current.filter,
             builder: (context, state) {
               return ProblemFilterBar(
                 filter: state.filter,
                 onFilterChanged: (filter) {
-                  context
-                      .read<ProblemListBloc>()
-                      .add(ProblemListFilterChanged(filter));
+                  context.read<ProblemListBloc>().add(
+                    ProblemListFilterChanged(filter),
+                  );
                 },
               );
             },
@@ -86,9 +85,9 @@ class ProblemsPage extends StatelessWidget {
                   case ProblemListStatus.failure:
                     return AppErrorWidget(
                       message: state.errorMessage ?? 'Failed to load problems',
-                      onRetry: () => context
-                          .read<ProblemListBloc>()
-                          .add(ProblemListFetched()),
+                      onRetry: () => context.read<ProblemListBloc>().add(
+                        ProblemListFetched(),
+                      ),
                     );
                   case ProblemListStatus.success:
                     if (state.problems.isEmpty) {
@@ -108,8 +107,7 @@ class ProblemsPage extends StatelessWidget {
                             const SizedBox(height: 16),
                             Text(
                               'No problems found',
-                              style:
-                                  Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             const SizedBox(height: 8),
                             Text(
@@ -125,9 +123,9 @@ class ProblemsPage extends StatelessWidget {
                       onNotification: (notification) {
                         if (notification is ScrollEndNotification &&
                             notification.metrics.extentAfter < 200) {
-                          context
-                              .read<ProblemListBloc>()
-                              .add(ProblemListLoadMore());
+                          context.read<ProblemListBloc>().add(
+                            ProblemListLoadMore(),
+                          );
                         }
                         return false;
                       },
@@ -144,8 +142,8 @@ class ProblemsPage extends StatelessWidget {
                             },
                             onFavoriteToggle: () {
                               context.read<ProblemListBloc>().add(
-                                    ProblemListFavoriteToggled(problem.id),
-                                  );
+                                ProblemListFavoriteToggled(problem.id),
+                              );
                             },
                           );
                         },
@@ -165,11 +163,11 @@ class _ColumnHeaders extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = Theme.of(context).textTheme.labelSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).brightness == Brightness.dark
-              ? ColorPalette.darkTextSecondary
-              : ColorPalette.lightTextSecondary,
-        );
+      fontWeight: FontWeight.w600,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? ColorPalette.darkTextSecondary
+          : ColorPalette.lightTextSecondary,
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
@@ -190,7 +188,11 @@ class _ColumnHeaders extends StatelessWidget {
           const SizedBox(width: 16),
           SizedBox(
             width: 64,
-            child: Text('Difficulty', style: style, textAlign: TextAlign.center),
+            child: Text(
+              'Difficulty',
+              style: style,
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(width: 22),
         ],

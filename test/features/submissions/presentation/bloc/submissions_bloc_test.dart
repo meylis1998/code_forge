@@ -57,11 +57,13 @@ void main() {
     blocTest<SubmissionsBloc, SubmissionsState>(
       'emits [loading, loaded] with submissions on success',
       build: () {
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              lang: null,
-              statusDisplay: null,
-            )).thenAnswer((_) async => tSubmissions);
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            lang: null,
+            statusDisplay: null,
+          ),
+        ).thenAnswer((_) async => tSubmissions);
         return bloc;
       },
       act: (bloc) => bloc.add(SubmissionsLoaded()),
@@ -77,18 +79,23 @@ void main() {
     blocTest<SubmissionsBloc, SubmissionsState>(
       'emits [loading, error] on failure',
       build: () {
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              lang: null,
-              statusDisplay: null,
-            )).thenThrow(Exception('DB error'));
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            lang: null,
+            statusDisplay: null,
+          ),
+        ).thenThrow(Exception('DB error'));
         return bloc;
       },
       act: (bloc) => bloc.add(SubmissionsLoaded()),
       expect: () => [
         const SubmissionsState(status: SubmissionsStatus.loading),
-        isA<SubmissionsState>()
-            .having((s) => s.status, 'status', SubmissionsStatus.error),
+        isA<SubmissionsState>().having(
+          (s) => s.status,
+          'status',
+          SubmissionsStatus.error,
+        ),
       ],
     );
 
@@ -109,18 +116,23 @@ void main() {
             createdAt: DateTime.now(),
           ),
         );
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              lang: null,
-              statusDisplay: null,
-            )).thenAnswer((_) async => manySubmissions);
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            lang: null,
+            statusDisplay: null,
+          ),
+        ).thenAnswer((_) async => manySubmissions);
         return bloc;
       },
       act: (bloc) => bloc.add(SubmissionsLoaded()),
       expect: () => [
         const SubmissionsState(status: SubmissionsStatus.loading),
-        isA<SubmissionsState>()
-            .having((s) => s.hasReachedMax, 'hasReachedMax', false),
+        isA<SubmissionsState>().having(
+          (s) => s.hasReachedMax,
+          'hasReachedMax',
+          false,
+        ),
       ],
     );
   });
@@ -140,12 +152,14 @@ void main() {
     blocTest<SubmissionsBloc, SubmissionsState>(
       'appends new submissions when hasReachedMax is false',
       build: () {
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              offset: 2,
-              lang: null,
-              statusDisplay: null,
-            )).thenAnswer((_) async => [tSubmissions.first]);
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            offset: 2,
+            lang: null,
+            statusDisplay: null,
+          ),
+        ).thenAnswer((_) async => [tSubmissions.first]);
         return bloc;
       },
       seed: () => SubmissionsState(
@@ -165,15 +179,16 @@ void main() {
     blocTest<SubmissionsBloc, SubmissionsState>(
       'fetches submissions with language filter',
       build: () {
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              lang: 'python3',
-              statusDisplay: null,
-            )).thenAnswer((_) async => [tSubmissions.first]);
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            lang: 'python3',
+            statusDisplay: null,
+          ),
+        ).thenAnswer((_) async => [tSubmissions.first]);
         return bloc;
       },
-      act: (bloc) =>
-          bloc.add(const SubmissionsFilterChanged(lang: 'python3')),
+      act: (bloc) => bloc.add(const SubmissionsFilterChanged(lang: 'python3')),
       expect: () => [
         isA<SubmissionsState>()
             .having((s) => s.status, 'status', SubmissionsStatus.loading)
@@ -187,11 +202,13 @@ void main() {
     blocTest<SubmissionsBloc, SubmissionsState>(
       'fetches submissions with status filter',
       build: () {
-        when(() => mockSubmissionDao.getSubmissions(
-              limit: 20,
-              lang: null,
-              statusDisplay: 'Accepted',
-            )).thenAnswer((_) async => [tSubmissions.first]);
+        when(
+          () => mockSubmissionDao.getSubmissions(
+            limit: 20,
+            lang: null,
+            statusDisplay: 'Accepted',
+          ),
+        ).thenAnswer((_) async => [tSubmissions.first]);
         return bloc;
       },
       act: (bloc) =>
@@ -200,8 +217,11 @@ void main() {
         isA<SubmissionsState>()
             .having((s) => s.status, 'status', SubmissionsStatus.loading)
             .having((s) => s.statusFilter, 'statusFilter', 'Accepted'),
-        isA<SubmissionsState>()
-            .having((s) => s.status, 'status', SubmissionsStatus.loaded),
+        isA<SubmissionsState>().having(
+          (s) => s.status,
+          'status',
+          SubmissionsStatus.loaded,
+        ),
       ],
     );
   });

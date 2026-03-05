@@ -13,9 +13,9 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
   CodeEditorBloc({
     required GetProblemDetailUseCase getProblemDetail,
     required CodeTemplateDao codeTemplateDao,
-  })  : _getProblemDetail = getProblemDetail,
-        _codeTemplateDao = codeTemplateDao,
-        super(const CodeEditorState()) {
+  }) : _getProblemDetail = getProblemDetail,
+       _codeTemplateDao = codeTemplateDao,
+       super(const CodeEditorState()) {
     on<CodeEditorLoadProblem>(_onLoadProblem);
     on<CodeEditorLanguageChanged>(_onLanguageChanged);
     on<CodeEditorCodeChanged>(_onCodeChanged);

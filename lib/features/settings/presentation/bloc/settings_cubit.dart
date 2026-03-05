@@ -6,17 +6,14 @@ part 'settings_state.dart';
 class SettingsCubit extends HydratedCubit<SettingsState> {
   SettingsCubit() : super(const SettingsState());
 
-  void setThemeMode(String mode) =>
-      emit(state.copyWith(themeMode: mode));
+  void setThemeMode(String mode) => emit(state.copyWith(themeMode: mode));
 
   void setEditorFontSize(double size) =>
       emit(state.copyWith(editorFontSize: size));
 
-  void setEditorTabSize(int size) =>
-      emit(state.copyWith(editorTabSize: size));
+  void setEditorTabSize(int size) => emit(state.copyWith(editorTabSize: size));
 
-  void setEditorTheme(String theme) =>
-      emit(state.copyWith(editorTheme: theme));
+  void setEditorTheme(String theme) => emit(state.copyWith(editorTheme: theme));
 
   void setDefaultLanguage(String language) =>
       emit(state.copyWith(defaultLanguage: language));

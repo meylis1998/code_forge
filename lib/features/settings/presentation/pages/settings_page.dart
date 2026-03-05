@@ -62,9 +62,9 @@ class SettingsPage extends StatelessWidget {
                                     children: [
                                       Text(
                                         state.user.username,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium,
+                                        style: Theme.of(
+                                          context,
+                                        ).textTheme.titleMedium,
                                       ),
                                       Text(
                                         'Connected to LeetCode',
@@ -80,9 +80,9 @@ class SettingsPage extends StatelessWidget {
                                 ),
                                 OutlinedButton(
                                   onPressed: () {
-                                    context
-                                        .read<AuthBloc>()
-                                        .add(AuthLogoutRequested());
+                                    context.read<AuthBloc>().add(
+                                      AuthLogoutRequested(),
+                                    );
                                   },
                                   child: const Text('Disconnect'),
                                 ),
@@ -100,35 +100,32 @@ class SettingsPage extends StatelessWidget {
                               Icon(
                                 CupertinoIcons.person_circle,
                                 size: 40,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodySmall?.color,
                               ),
                               const SizedBox(width: 16),
                               Expanded(
                                 child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Not connected',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.titleMedium,
                                     ),
                                     Text(
                                       'Connect your LeetCode account to submit solutions',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
                               ),
                               ElevatedButton(
-                                onPressed: () =>
-                                    LoginDialog.show(context),
+                                onPressed: () => LoginDialog.show(context),
                                 child: const Text('Connect'),
                               ),
                             ],
@@ -178,9 +175,9 @@ class SettingsPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       '${state.editorFontSize.toInt()}px',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium,
                                     ),
                                     const SizedBox(width: 8),
                                     SizedBox(
@@ -254,9 +251,9 @@ class SettingsPage extends StatelessWidget {
                                 child: Switch(
                                   value: state.autoSave,
                                   onChanged: (value) {
-                                    context
-                                        .read<SettingsCubit>()
-                                        .setAutoSave(enabled: value);
+                                    context.read<SettingsCubit>().setAutoSave(
+                                      enabled: value,
+                                    );
                                   },
                                 ),
                               ),
@@ -281,53 +278,59 @@ class SettingsPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
-                            children: LeetCodeLanguages.all
-                                .map((lang) {
-                                  final hasTemplate = state.templates.any(
-                                    (t) => t.languageSlug == lang.slug,
-                                  );
-                                  return _SettingsRow(
-                                    label: lang.name,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        if (hasTemplate)
-                                          Padding(
-                                            padding:
-                                                const EdgeInsets.only(right: 8),
-                                            child: Icon(
-                                              CupertinoIcons
-                                                  .checkmark_circle_fill,
-                                              size: 14,
-                                              color: ColorPalette.accepted,
+                            children:
+                                LeetCodeLanguages.all
+                                    .map((lang) {
+                                      final hasTemplate = state.templates.any(
+                                        (t) => t.languageSlug == lang.slug,
+                                      );
+                                      return _SettingsRow(
+                                        label: lang.name,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            if (hasTemplate)
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 8,
+                                                ),
+                                                child: Icon(
+                                                  CupertinoIcons
+                                                      .checkmark_circle_fill,
+                                                  size: 14,
+                                                  color: ColorPalette.accepted,
+                                                ),
+                                              ),
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                final existing =
+                                                    context
+                                                        .read<
+                                                          CodeTemplateCubit
+                                                        >()
+                                                        .getTemplate(
+                                                          lang.slug,
+                                                        ) ??
+                                                    '';
+                                                CodeTemplateEditorDialog.show(
+                                                  context,
+                                                  language: lang,
+                                                  initialTemplate: existing,
+                                                );
+                                              },
+                                              child: Text(
+                                                hasTemplate ? 'Edit' : 'Add',
+                                              ),
                                             ),
-                                          ),
-                                        OutlinedButton(
-                                          onPressed: () {
-                                            final existing =
-                                                context
-                                                    .read<CodeTemplateCubit>()
-                                                    .getTemplate(lang.slug) ??
-                                                '';
-                                            CodeTemplateEditorDialog.show(
-                                              context,
-                                              language: lang,
-                                              initialTemplate: existing,
-                                            );
-                                          },
-                                          child: Text(
-                                            hasTemplate ? 'Edit' : 'Add',
-                                          ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                })
-                                .expand(
-                                  (widget) => [widget, const Divider()],
-                                )
-                                .toList()
-                              ..removeLast(),
+                                      );
+                                    })
+                                    .expand(
+                                      (widget) => [widget, const Divider()],
+                                    )
+                                    .toList()
+                                  ..removeLast(),
                           ),
                         ),
                       );
@@ -381,8 +384,8 @@ class _SectionHeader extends StatelessWidget {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }

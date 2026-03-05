@@ -55,8 +55,9 @@ void main() {
     blocTest<ProblemListBloc, ProblemListState>(
       'emits [loading, success] with problems on success',
       build: () {
-        when(() => mockGetProblems(any()))
-            .thenAnswer((_) async => Right(tProblems));
+        when(
+          () => mockGetProblems(any()),
+        ).thenAnswer((_) async => Right(tProblems));
         return bloc;
       },
       act: (bloc) => bloc.add(ProblemListFetched()),
@@ -93,8 +94,9 @@ void main() {
     blocTest<ProblemListBloc, ProblemListState>(
       'fetches problems with new filter',
       build: () {
-        when(() => mockGetProblems(any()))
-            .thenAnswer((_) async => Right(tProblems));
+        when(
+          () => mockGetProblems(any()),
+        ).thenAnswer((_) async => Right(tProblems));
         return bloc;
       },
       act: (bloc) => bloc.add(

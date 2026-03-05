@@ -23,8 +23,7 @@ class CodeExecutionRunRequested extends CodeExecutionEvent {
   final String questionId;
 
   @override
-  List<Object?> get props =>
-      [titleSlug, code, language, testCases, questionId];
+  List<Object?> get props => [titleSlug, code, language, testCases, questionId];
 }
 
 class CodeExecutionSubmitRequested extends CodeExecutionEvent {

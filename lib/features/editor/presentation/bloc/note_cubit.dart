@@ -8,8 +8,8 @@ part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
   NoteCubit({required NoteRepository noteRepository})
-      : _noteRepository = noteRepository,
-        super(const NoteState());
+    : _noteRepository = noteRepository,
+      super(const NoteState());
 
   final NoteRepository _noteRepository;
 
@@ -19,26 +19,32 @@ class NoteCubit extends Cubit<NoteState> {
     final result = await _noteRepository.getNote(problemId);
 
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: NoteStatus.loaded,
-        content: '',
-      )),
-      (note) => emit(state.copyWith(
-        status: NoteStatus.loaded,
-        content: note?.content ?? '',
-        note: note,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: NoteStatus.loaded,
+          content: '',
+        ),
+      ),
+      (note) => emit(
+        state.copyWith(
+          status: NoteStatus.loaded,
+          content: note?.content ?? '',
+          note: note,
+        ),
+      ),
     );
   }
 
   Future<void> saveNote(int problemId, String content) async {
     if (content.isEmpty) {
       await _noteRepository.deleteNote(problemId);
-      emit(state.copyWith(
-        status: NoteStatus.loaded,
-        content: '',
-        clearNote: true,
-      ));
+      emit(
+        state.copyWith(
+          status: NoteStatus.loaded,
+          content: '',
+          clearNote: true,
+        ),
+      );
       return;
     }
 
@@ -48,11 +54,13 @@ class NoteCubit extends Cubit<NoteState> {
 
     result.fold(
       (failure) => emit(state.copyWith(status: NoteStatus.loaded)),
-      (note) => emit(state.copyWith(
-        status: NoteStatus.saved,
-        content: content,
-        note: note,
-      )),
+      (note) => emit(
+        state.copyWith(
+          status: NoteStatus.saved,
+          content: content,
+          note: note,
+        ),
+      ),
     );
   }
 }

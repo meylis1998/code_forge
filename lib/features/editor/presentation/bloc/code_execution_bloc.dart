@@ -7,12 +7,11 @@ import '../../domain/repositories/code_execution_repository.dart';
 part 'code_execution_event.dart';
 part 'code_execution_state.dart';
 
-class CodeExecutionBloc
-    extends Bloc<CodeExecutionEvent, CodeExecutionState> {
+class CodeExecutionBloc extends Bloc<CodeExecutionEvent, CodeExecutionState> {
   CodeExecutionBloc({
     required CodeExecutionRepository repository,
-  })  : _repository = repository,
-        super(const CodeExecutionState()) {
+  }) : _repository = repository,
+       super(const CodeExecutionState()) {
     on<CodeExecutionRunRequested>(_onRunCode);
     on<CodeExecutionSubmitRequested>(_onSubmitCode);
     on<CodeExecutionReset>(_onReset);
@@ -24,11 +23,13 @@ class CodeExecutionBloc
     CodeExecutionRunRequested event,
     Emitter<CodeExecutionState> emit,
   ) async {
-    emit(state.copyWith(
-      status: CodeExecutionStatus.running,
-      result: null,
-      errorMessage: null,
-    ));
+    emit(
+      state.copyWith(
+        status: CodeExecutionStatus.running,
+        result: null,
+        errorMessage: null,
+      ),
+    );
 
     final result = await _repository.runCode(
       titleSlug: event.titleSlug,
@@ -58,11 +59,13 @@ class CodeExecutionBloc
     CodeExecutionSubmitRequested event,
     Emitter<CodeExecutionState> emit,
   ) async {
-    emit(state.copyWith(
-      status: CodeExecutionStatus.submitting,
-      result: null,
-      errorMessage: null,
-    ));
+    emit(
+      state.copyWith(
+        status: CodeExecutionStatus.submitting,
+        result: null,
+        errorMessage: null,
+      ),
+    );
 
     final result = await _repository.submitCode(
       titleSlug: event.titleSlug,

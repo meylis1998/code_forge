@@ -60,12 +60,15 @@ void main() {
 
   /// Helper to stub all supplementary data source methods
   void stubSupplementaryMethods() {
-    when(() => mockDataSource.getContestStats('testuser'))
-        .thenAnswer((_) async => tContestStats);
-    when(() => mockDataSource.getLanguageStats('testuser'))
-        .thenAnswer((_) async => tLanguageStats);
-    when(() => mockDataSource.getSkillStats('testuser'))
-        .thenAnswer((_) async => tSkillStats);
+    when(
+      () => mockDataSource.getContestStats('testuser'),
+    ).thenAnswer((_) async => tContestStats);
+    when(
+      () => mockDataSource.getLanguageStats('testuser'),
+    ).thenAnswer((_) async => tLanguageStats);
+    when(
+      () => mockDataSource.getSkillStats('testuser'),
+    ).thenAnswer((_) async => tSkillStats);
   }
 
   test('initial state is correct', () {
@@ -77,10 +80,12 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits [loading, loaded] with stats and daily challenge',
       build: () {
-        when(() => mockDataSource.getUserStats('testuser'))
-            .thenAnswer((_) async => tStats);
-        when(() => mockDataSource.getDailyChallenge())
-            .thenAnswer((_) async => tDailyChallenge);
+        when(
+          () => mockDataSource.getUserStats('testuser'),
+        ).thenAnswer((_) async => tStats);
+        when(
+          () => mockDataSource.getDailyChallenge(),
+        ).thenAnswer((_) async => tDailyChallenge);
         stubSupplementaryMethods();
         return bloc;
       },
@@ -112,16 +117,21 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits loaded even when supplementary calls fail',
       build: () {
-        when(() => mockDataSource.getUserStats('testuser'))
-            .thenAnswer((_) async => tStats);
-        when(() => mockDataSource.getDailyChallenge())
-            .thenAnswer((_) async => tDailyChallenge);
-        when(() => mockDataSource.getContestStats('testuser'))
-            .thenThrow(Exception('Contest error'));
-        when(() => mockDataSource.getLanguageStats('testuser'))
-            .thenThrow(Exception('Language error'));
-        when(() => mockDataSource.getSkillStats('testuser'))
-            .thenThrow(Exception('Skill error'));
+        when(
+          () => mockDataSource.getUserStats('testuser'),
+        ).thenAnswer((_) async => tStats);
+        when(
+          () => mockDataSource.getDailyChallenge(),
+        ).thenAnswer((_) async => tDailyChallenge);
+        when(
+          () => mockDataSource.getContestStats('testuser'),
+        ).thenThrow(Exception('Contest error'));
+        when(
+          () => mockDataSource.getLanguageStats('testuser'),
+        ).thenThrow(Exception('Language error'));
+        when(
+          () => mockDataSource.getSkillStats('testuser'),
+        ).thenThrow(Exception('Skill error'));
         return bloc;
       },
       act: (bloc) => bloc.add(const DashboardLoaded('testuser')),
@@ -137,8 +147,9 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits [loading, unauthenticated] on AuthException',
       build: () {
-        when(() => mockDataSource.getUserStats('testuser'))
-            .thenThrow(const AuthException(message: 'Session expired'));
+        when(
+          () => mockDataSource.getUserStats('testuser'),
+        ).thenThrow(const AuthException(message: 'Session expired'));
         return bloc;
       },
       act: (bloc) => bloc.add(const DashboardLoaded('testuser')),
@@ -151,8 +162,9 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'emits [loading, error] on generic exception',
       build: () {
-        when(() => mockDataSource.getUserStats('testuser'))
-            .thenThrow(Exception('Network error'));
+        when(
+          () => mockDataSource.getUserStats('testuser'),
+        ).thenThrow(Exception('Network error'));
         return bloc;
       },
       act: (bloc) => bloc.add(const DashboardLoaded('testuser')),
@@ -180,10 +192,12 @@ void main() {
     blocTest<DashboardBloc, DashboardState>(
       'reloads stats when stats exist',
       build: () {
-        when(() => mockDataSource.getUserStats('testuser'))
-            .thenAnswer((_) async => tStats);
-        when(() => mockDataSource.getDailyChallenge())
-            .thenAnswer((_) async => tDailyChallenge);
+        when(
+          () => mockDataSource.getUserStats('testuser'),
+        ).thenAnswer((_) async => tStats);
+        when(
+          () => mockDataSource.getDailyChallenge(),
+        ).thenAnswer((_) async => tDailyChallenge);
         stubSupplementaryMethods();
         return bloc;
       },
@@ -193,10 +207,16 @@ void main() {
       ),
       act: (bloc) => bloc.add(DashboardRefreshed()),
       expect: () => [
-        isA<DashboardState>()
-            .having((s) => s.status, 'status', DashboardStatus.loading),
-        isA<DashboardState>()
-            .having((s) => s.status, 'status', DashboardStatus.loaded),
+        isA<DashboardState>().having(
+          (s) => s.status,
+          'status',
+          DashboardStatus.loading,
+        ),
+        isA<DashboardState>().having(
+          (s) => s.status,
+          'status',
+          DashboardStatus.loaded,
+        ),
       ],
     );
   });

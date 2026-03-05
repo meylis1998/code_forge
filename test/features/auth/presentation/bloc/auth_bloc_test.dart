@@ -54,8 +54,9 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       'emits [AuthLoading, AuthAuthenticated] when user exists',
       build: () {
-        when(() => mockGetCurrentUser(any()))
-            .thenAnswer((_) async => const Right(tUser));
+        when(
+          () => mockGetCurrentUser(any()),
+        ).thenAnswer((_) async => const Right(tUser));
         return bloc;
       },
       act: (bloc) => bloc.add(AuthCheckRequested()),
@@ -85,8 +86,9 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       'emits [AuthLoading, AuthAuthenticated] on successful login',
       build: () {
-        when(() => mockLogin(any()))
-            .thenAnswer((_) async => const Right(tUser));
+        when(
+          () => mockLogin(any()),
+        ).thenAnswer((_) async => const Right(tUser));
         return bloc;
       },
       act: (bloc) => bloc.add(
@@ -120,8 +122,9 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       'emits [AuthUnauthenticated] on logout',
       build: () {
-        when(() => mockLogout(any()))
-            .thenAnswer((_) async => const Right(null));
+        when(
+          () => mockLogout(any()),
+        ).thenAnswer((_) async => const Right(null));
         return bloc;
       },
       act: (bloc) => bloc.add(AuthLogoutRequested()),

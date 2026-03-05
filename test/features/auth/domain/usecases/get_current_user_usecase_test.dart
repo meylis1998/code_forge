@@ -21,8 +21,9 @@ void main() {
   const tUser = AuthUser(username: 'testuser');
 
   test('should return AuthUser when user is logged in', () async {
-    when(() => mockRepository.getCurrentUser())
-        .thenAnswer((_) async => const Right(tUser));
+    when(
+      () => mockRepository.getCurrentUser(),
+    ).thenAnswer((_) async => const Right(tUser));
 
     final result = await useCase(NoParams());
 
@@ -32,8 +33,9 @@ void main() {
 
   test('should return AuthFailure when no user is logged in', () async {
     const failure = AuthFailure(message: 'No user logged in');
-    when(() => mockRepository.getCurrentUser())
-        .thenAnswer((_) async => const Left(failure));
+    when(
+      () => mockRepository.getCurrentUser(),
+    ).thenAnswer((_) async => const Left(failure));
 
     final result = await useCase(NoParams());
 

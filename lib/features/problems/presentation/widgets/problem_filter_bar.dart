@@ -92,8 +92,7 @@ class ProblemFilterBar extends StatelessWidget {
   void _toggleDifficulty(String difficulty) {
     onFilterChanged(
       filter.copyWith(
-        difficulty: () =>
-            filter.difficulty == difficulty ? null : difficulty,
+        difficulty: () => filter.difficulty == difficulty ? null : difficulty,
       ),
     );
   }
@@ -162,17 +161,17 @@ class _FilterChipState extends State<_FilterChip> {
             color: widget.isSelected
                 ? widget.color.withValues(alpha: 0.15)
                 : _isHovered
-                    ? (isDark
-                        ? Colors.white.withValues(alpha: 0.05)
-                        : Colors.black.withValues(alpha: 0.05))
-                    : Colors.transparent,
+                ? (isDark
+                      ? Colors.white.withValues(alpha: 0.05)
+                      : Colors.black.withValues(alpha: 0.05))
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
               color: widget.isSelected
                   ? widget.color.withValues(alpha: 0.5)
                   : isDark
-                      ? ColorPalette.darkDivider
-                      : ColorPalette.lightDivider,
+                  ? ColorPalette.darkDivider
+                  : ColorPalette.lightDivider,
             ),
           ),
           child: Row(

@@ -37,11 +37,11 @@ class SettingsState extends Equatable {
 
   @override
   List<Object?> get props => [
-        themeMode,
-        editorFontSize,
-        editorTabSize,
-        editorTheme,
-        defaultLanguage,
-        autoSave,
-      ];
+    themeMode,
+    editorFontSize,
+    editorTabSize,
+    editorTheme,
+    defaultLanguage,
+    autoSave,
+  ];
 }

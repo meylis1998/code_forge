@@ -63,8 +63,9 @@ void main() {
 
   group('getProblems', () {
     test('returns problems from local data source', () async {
-      when(() => mockLocal.getProblems(any()))
-          .thenAnswer((_) async => [tProblem]);
+      when(
+        () => mockLocal.getProblems(any()),
+      ).thenAnswer((_) async => [tProblem]);
 
       final result = await repository.getProblems(tFilter);
 
@@ -77,8 +78,9 @@ void main() {
     });
 
     test('returns CacheFailure on CacheException', () async {
-      when(() => mockLocal.getProblems(any()))
-          .thenThrow(const CacheException(message: 'DB error'));
+      when(
+        () => mockLocal.getProblems(any()),
+      ).thenThrow(const CacheException(message: 'DB error'));
 
       final result = await repository.getProblems(tFilter);
 
@@ -92,8 +94,9 @@ void main() {
 
   group('getProblemsCount', () {
     test('returns count from local data source', () async {
-      when(() => mockLocal.getProblemsCount(any()))
-          .thenAnswer((_) async => 100);
+      when(
+        () => mockLocal.getProblemsCount(any()),
+      ).thenAnswer((_) async => 100);
 
       final result = await repository.getProblemsCount(tFilter);
 
@@ -103,8 +106,9 @@ void main() {
 
   group('getProblemDetail', () {
     test('returns local problem when content is available', () async {
-      when(() => mockLocal.getProblemBySlug('two-sum'))
-          .thenAnswer((_) async => tProblemWithContent);
+      when(
+        () => mockLocal.getProblemBySlug('two-sum'),
+      ).thenAnswer((_) async => tProblemWithContent);
 
       final result = await repository.getProblemDetail('two-sum');
 
@@ -113,14 +117,17 @@ void main() {
     });
 
     test('fetches from remote when local has no content', () async {
-      when(() => mockLocal.getProblemBySlug('two-sum'))
-          .thenAnswer((_) async => tProblem);
+      when(
+        () => mockLocal.getProblemBySlug('two-sum'),
+      ).thenAnswer((_) async => tProblem);
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemote.getProblemDetail('two-sum'))
-          .thenAnswer((_) async => tProblemWithContent);
+      when(
+        () => mockRemote.getProblemDetail('two-sum'),
+      ).thenAnswer((_) async => tProblemWithContent);
       when(() => mockLocal.saveProblems(any())).thenAnswer((_) async {});
-      when(() => mockLocal.saveCodeSnippets(any(), any()))
-          .thenAnswer((_) async {});
+      when(
+        () => mockLocal.saveCodeSnippets(any(), any()),
+      ).thenAnswer((_) async {});
 
       final result = await repository.getProblemDetail('two-sum');
 
@@ -130,8 +137,9 @@ void main() {
     });
 
     test('returns local problem when offline and no content', () async {
-      when(() => mockLocal.getProblemBySlug('two-sum'))
-          .thenAnswer((_) async => tProblem);
+      when(
+        () => mockLocal.getProblemBySlug('two-sum'),
+      ).thenAnswer((_) async => tProblem);
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
 
       final result = await repository.getProblemDetail('two-sum');
@@ -140,8 +148,9 @@ void main() {
     });
 
     test('returns CacheFailure when problem not found and offline', () async {
-      when(() => mockLocal.getProblemBySlug('unknown'))
-          .thenAnswer((_) async => null);
+      when(
+        () => mockLocal.getProblemBySlug('unknown'),
+      ).thenAnswer((_) async => null);
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => false);
 
       final result = await repository.getProblemDetail('unknown');
@@ -154,11 +163,13 @@ void main() {
     });
 
     test('returns AuthFailure on AuthException and no local data', () async {
-      when(() => mockLocal.getProblemBySlug('two-sum'))
-          .thenAnswer((_) async => null);
+      when(
+        () => mockLocal.getProblemBySlug('two-sum'),
+      ).thenAnswer((_) async => null);
       when(() => mockNetworkInfo.isConnected).thenAnswer((_) async => true);
-      when(() => mockRemote.getProblemDetail('two-sum'))
-          .thenThrow(const AuthException(message: 'Auth required'));
+      when(
+        () => mockRemote.getProblemDetail('two-sum'),
+      ).thenThrow(const AuthException(message: 'Auth required'));
 
       final result = await repository.getProblemDetail('two-sum');
 

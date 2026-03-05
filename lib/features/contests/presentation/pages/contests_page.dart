@@ -28,9 +28,8 @@ class ContestsPage extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () => context
-                      .read<ContestBloc>()
-                      .add(ContestsRefreshed()),
+                  onPressed: () =>
+                      context.read<ContestBloc>().add(ContestsRefreshed()),
                   icon: const Icon(CupertinoIcons.refresh, size: 18),
                   tooltip: 'Refresh',
                 ),
@@ -49,11 +48,9 @@ class ContestsPage extends StatelessWidget {
                     );
                   case ContestStatus.error:
                     return AppErrorWidget(
-                      message:
-                          state.errorMessage ?? 'Failed to load contests',
-                      onRetry: () => context
-                          .read<ContestBloc>()
-                          .add(ContestsLoaded()),
+                      message: state.errorMessage ?? 'Failed to load contests',
+                      onRetry: () =>
+                          context.read<ContestBloc>().add(ContestsLoaded()),
                     );
                   case ContestStatus.loaded:
                     return _ContestsList(state: state);
@@ -102,19 +99,17 @@ class _ContestsList extends StatelessWidget {
                 children: [
                   Text(
                     'Next Contest',
-                    style:
-                        Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: ColorPalette.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ColorPalette.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     state.nextContest!.title,
-                    style:
-                        Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
@@ -156,16 +151,18 @@ class _ContestsList extends StatelessWidget {
             Text(
               'Upcoming',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 12),
             ...state.upcoming
                 .skip(1)
-                .map((c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: ContestCard(contest: c),
-                    )),
+                .map(
+                  (c) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: ContestCard(contest: c),
+                  ),
+                ),
             const SizedBox(height: 24),
           ],
 
@@ -175,29 +172,30 @@ class _ContestsList extends StatelessWidget {
               children: [
                 Text(
                   'Past Contests',
-                  style:
-                      Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(width: 8),
                 Text(
                   '(${state.past.length})',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isDark
-                            ? ColorPalette.darkTextSecondary
-                            : ColorPalette.lightTextSecondary,
-                      ),
+                    color: isDark
+                        ? ColorPalette.darkTextSecondary
+                        : ColorPalette.lightTextSecondary,
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
             ...state.past
                 .take(20)
-                .map((c) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: ContestCard(contest: c),
-                    )),
+                .map(
+                  (c) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: ContestCard(contest: c),
+                  ),
+                ),
           ],
         ],
       ),

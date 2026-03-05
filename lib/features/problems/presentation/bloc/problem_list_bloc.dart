@@ -15,17 +15,16 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
   ProblemListBloc({
     required GetProblemsUseCase getProblems,
     required ProblemRepository problemRepository,
-  })  : _getProblems = getProblems,
-        _problemRepository = problemRepository,
-        super(const ProblemListState()) {
+  }) : _getProblems = getProblems,
+       _problemRepository = problemRepository,
+       super(const ProblemListState()) {
     on<ProblemListFetched>(
       _onFetched,
     );
     on<ProblemListSearchChanged>(
       _onSearchChanged,
-      transformer: (events, mapper) => events
-          .debounceTime(AppConstants.searchDebounce)
-          .asyncExpand(mapper),
+      transformer: (events, mapper) =>
+          events.debounceTime(AppConstants.searchDebounce).asyncExpand(mapper),
     );
     on<ProblemListFilterChanged>(_onFilterChanged);
     on<ProblemListLoadMore>(_onLoadMore);
@@ -70,10 +69,12 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
       page: 0,
     );
 
-    emit(state.copyWith(
-      filter: newFilter,
-      status: ProblemListStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        filter: newFilter,
+        status: ProblemListStatus.loading,
+      ),
+    );
 
     final result = await _getProblems(newFilter);
 
@@ -100,10 +101,12 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
   ) async {
     final newFilter = event.filter.copyWith(page: 0);
 
-    emit(state.copyWith(
-      filter: newFilter,
-      status: ProblemListStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        filter: newFilter,
+        status: ProblemListStatus.loading,
+      ),
+    );
 
     final result = await _getProblems(newFilter);
 
@@ -199,10 +202,12 @@ class ProblemListBloc extends Bloc<ProblemListEvent, ProblemListState> {
   ) async {
     final newFilter = state.filter.copyWith(page: 0);
 
-    emit(state.copyWith(
-      filter: newFilter,
-      status: ProblemListStatus.loading,
-    ));
+    emit(
+      state.copyWith(
+        filter: newFilter,
+        status: ProblemListStatus.loading,
+      ),
+    );
 
     final result = await _getProblems(newFilter);
 

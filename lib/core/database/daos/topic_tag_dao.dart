@@ -13,9 +13,9 @@ class TopicTagDao extends DatabaseAccessor<AppDatabase>
 
   // Get all tags
   Future<List<TopicTagsTableData>> getAllTags() {
-    return (select(topicTagsTable)
-          ..orderBy([(t) => OrderingTerm.asc(t.name)]))
-        .get();
+    return (select(
+      topicTagsTable,
+    )..orderBy([(t) => OrderingTerm.asc(t.name)])).get();
   }
 
   // Upsert a tag
@@ -62,23 +62,24 @@ class TopicTagDao extends DatabaseAccessor<AppDatabase>
 
   // Clear problem tags
   Future<void> clearProblemTags(int problemId) {
-    return (delete(problemTopicTagsTable)
-          ..where((t) => t.problemId.equals(problemId)))
-        .go();
+    return (delete(
+      problemTopicTagsTable,
+    )..where((t) => t.problemId.equals(problemId))).go();
   }
 
   // Get tags with problem counts
   Future<List<TagWithCount>> getTagsWithCounts() async {
     final countExp = problemTopicTagsTable.problemId.count();
-    final query = select(topicTagsTable).join([
-      leftOuterJoin(
-        problemTopicTagsTable,
-        problemTopicTagsTable.tagId.equalsExp(topicTagsTable.id),
-      ),
-    ])
-      ..addColumns([countExp])
-      ..groupBy([topicTagsTable.id])
-      ..orderBy([OrderingTerm.desc(countExp)]);
+    final query =
+        select(topicTagsTable).join([
+            leftOuterJoin(
+              problemTopicTagsTable,
+              problemTopicTagsTable.tagId.equalsExp(topicTagsTable.id),
+            ),
+          ])
+          ..addColumns([countExp])
+          ..groupBy([topicTagsTable.id])
+          ..orderBy([OrderingTerm.desc(countExp)]);
 
     final results = await query.get();
     return results.map((row) {

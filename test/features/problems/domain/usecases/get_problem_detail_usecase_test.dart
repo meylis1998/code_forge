@@ -29,8 +29,9 @@ void main() {
   );
 
   test('should return problem detail from repository', () async {
-    when(() => mockRepository.getProblemDetail('two-sum'))
-        .thenAnswer((_) async => const Right(tProblem));
+    when(
+      () => mockRepository.getProblemDetail('two-sum'),
+    ).thenAnswer((_) async => const Right(tProblem));
 
     final result = await useCase('two-sum');
 
@@ -39,10 +40,11 @@ void main() {
   });
 
   test('should return failure when repository fails', () async {
-    when(() => mockRepository.getProblemDetail('unknown'))
-        .thenAnswer((_) async => const Left(
-              CacheFailure(message: 'Not found'),
-            ));
+    when(() => mockRepository.getProblemDetail('unknown')).thenAnswer(
+      (_) async => const Left(
+        CacheFailure(message: 'Not found'),
+      ),
+    );
 
     final result = await useCase('unknown');
 

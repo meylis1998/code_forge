@@ -49,13 +49,13 @@ class CodeEditorState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        problem,
-        selectedLanguage,
-        code,
-        originalCode,
-        testCases,
-        codeDrafts,
-        errorMessage,
-      ];
+    status,
+    problem,
+    selectedLanguage,
+    code,
+    originalCode,
+    testCases,
+    codeDrafts,
+    errorMessage,
+  ];
 }

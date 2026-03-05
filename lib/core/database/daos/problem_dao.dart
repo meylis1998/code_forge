@@ -34,18 +34,15 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
     var query = select(problemsTable);
 
     if (difficulty != null) {
-      query = query
-        ..where((p) => p.difficulty.equals(difficulty));
+      query = query..where((p) => p.difficulty.equals(difficulty));
     }
 
     if (status != null) {
-      query = query
-        ..where((p) => p.status.equals(status));
+      query = query..where((p) => p.status.equals(status));
     }
 
     if (isFavorite == true) {
-      query = query
-        ..where((p) => p.isFavorite.equals(true));
+      query = query..where((p) => p.isFavorite.equals(true));
     }
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
@@ -78,9 +75,9 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
     query
       ..orderBy([
         (p) => OrderingTerm(
-              expression: p.frontendId,
-              mode: ascending ? OrderingMode.asc : OrderingMode.desc,
-            ),
+          expression: p.frontendId,
+          mode: ascending ? OrderingMode.asc : OrderingMode.desc,
+        ),
       ])
       ..limit(limit ?? 50, offset: offset ?? 0);
 
@@ -118,15 +115,16 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
 
   // Get single problem by titleSlug
   Future<ProblemsTableData?> getProblemBySlug(String titleSlug) {
-    return (select(problemsTable)
-          ..where((p) => p.titleSlug.equals(titleSlug)))
-        .getSingleOrNull();
+    return (select(
+      problemsTable,
+    )..where((p) => p.titleSlug.equals(titleSlug))).getSingleOrNull();
   }
 
   // Get single problem by id
   Future<ProblemsTableData?> getProblemById(int id) {
-    return (select(problemsTable)..where((p) => p.id.equals(id)))
-        .getSingleOrNull();
+    return (select(
+      problemsTable,
+    )..where((p) => p.id.equals(id))).getSingleOrNull();
   }
 
   // Upsert a problem
@@ -143,15 +141,16 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
 
   // Update problem status
   Future<void> updateProblemStatus(int problemId, String? status) {
-    return (update(problemsTable)..where((p) => p.id.equals(problemId)))
-        .write(ProblemsTableCompanion(status: Value(status)));
+    return (update(problemsTable)..where((p) => p.id.equals(problemId))).write(
+      ProblemsTableCompanion(status: Value(status)),
+    );
   }
 
   // Get code snippets for a problem
   Future<List<CodeSnippetsTableData>> getCodeSnippets(int problemId) {
-    return (select(codeSnippetsTable)
-          ..where((s) => s.problemId.equals(problemId)))
-        .get();
+    return (select(
+      codeSnippetsTable,
+    )..where((s) => s.problemId.equals(problemId))).get();
   }
 
   // Upsert code snippet
@@ -172,10 +171,11 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
   Future<void> toggleFavorite(int problemId) async {
     final problem = await getProblemById(problemId);
     if (problem != null) {
-      await (update(problemsTable)..where((p) => p.id.equals(problemId)))
-          .write(ProblemsTableCompanion(
-        isFavorite: Value(!problem.isFavorite),
-      ));
+      await (update(problemsTable)..where((p) => p.id.equals(problemId))).write(
+        ProblemsTableCompanion(
+          isFavorite: Value(!problem.isFavorite),
+        ),
+      );
     }
   }
 
@@ -197,8 +197,7 @@ class ProblemDao extends DatabaseAccessor<AppDatabase> with _$ProblemDaoMixin {
         problemTopicTagsTable,
         problemTopicTagsTable.tagId.equalsExp(topicTagsTable.id),
       ),
-    ])
-      ..where(problemTopicTagsTable.problemId.equals(problemId));
+    ])..where(problemTopicTagsTable.problemId.equals(problemId));
 
     final results = await query.get();
     return results.map((row) => row.readTable(topicTagsTable)).toList();

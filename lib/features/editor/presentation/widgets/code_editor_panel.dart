@@ -72,9 +72,7 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isDark
-                    ? ColorPalette.darkCard
-                    : ColorPalette.lightCard,
+                color: isDark ? ColorPalette.darkCard : ColorPalette.lightCard,
                 border: Border(
                   bottom: BorderSide(
                     color: isDark
@@ -88,14 +86,15 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
                   // Language selector
                   _LanguageDropdown(
                     selectedLanguage: state.selectedLanguage,
-                    availableLanguages: state.problem?.codeSnippets
+                    availableLanguages:
+                        state.problem?.codeSnippets
                             .map((s) => s.langSlug)
                             .toList() ??
                         [],
                     onChanged: (lang) {
-                      context
-                          .read<CodeEditorBloc>()
-                          .add(CodeEditorLanguageChanged(lang));
+                      context.read<CodeEditorBloc>().add(
+                        CodeEditorLanguageChanged(lang),
+                      );
                     },
                   ),
                   const Spacer(),
@@ -105,9 +104,9 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
                       message: 'Reset to default code',
                       child: IconButton(
                         onPressed: () {
-                          context
-                              .read<CodeEditorBloc>()
-                              .add(CodeEditorResetCode());
+                          context.read<CodeEditorBloc>().add(
+                            CodeEditorResetCode(),
+                          );
                         },
                         icon: Icon(
                           CupertinoIcons.arrow_counterclockwise,
@@ -136,9 +135,9 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
                       height: 1.5,
                     ),
                     onChanged: (value) {
-                      context
-                          .read<CodeEditorBloc>()
-                          .add(CodeEditorCodeChanged(value));
+                      context.read<CodeEditorBloc>().add(
+                        CodeEditorCodeChanged(value),
+                      );
                     },
                   ),
                 ),
@@ -170,8 +169,9 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: TextField(
-                        controller:
-                            TextEditingController(text: state.testCases),
+                        controller: TextEditingController(
+                          text: state.testCases,
+                        ),
                         maxLines: null,
                         expands: true,
                         style: GoogleFonts.jetBrainsMono(
@@ -184,9 +184,9 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
                           hintText: 'Enter test cases...',
                         ),
                         onChanged: (value) {
-                          context
-                              .read<CodeEditorBloc>()
-                              .add(CodeEditorTestCaseChanged(value));
+                          context.read<CodeEditorBloc>().add(
+                            CodeEditorTestCaseChanged(value),
+                          );
                         },
                       ),
                     ),
@@ -198,9 +198,7 @@ class _CodeEditorPanelState extends State<CodeEditorPanel> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: isDark
-                    ? ColorPalette.darkCard
-                    : ColorPalette.lightCard,
+                color: isDark ? ColorPalette.darkCard : ColorPalette.lightCard,
                 border: Border(
                   top: BorderSide(
                     color: isDark
@@ -274,8 +272,8 @@ class _LanguageDropdown extends StatelessWidget {
       isDense: true,
       underline: const SizedBox.shrink(),
       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+        fontWeight: FontWeight.w500,
+      ),
       items: languages.map((slug) {
         final lang = LeetCodeLanguages.fromSlug(slug);
         return DropdownMenuItem(
