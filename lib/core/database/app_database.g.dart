@@ -4119,6 +4119,312 @@ class NotesTableCompanion extends UpdateCompanion<NotesTableData> {
   }
 }
 
+class $CodeTemplatesTableTable extends CodeTemplatesTable
+    with TableInfo<$CodeTemplatesTableTable, CodeTemplatesTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CodeTemplatesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _languageSlugMeta = const VerificationMeta(
+    'languageSlug',
+  );
+  @override
+  late final GeneratedColumn<String> languageSlug = GeneratedColumn<String>(
+    'language_slug',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _templateMeta = const VerificationMeta(
+    'template',
+  );
+  @override
+  late final GeneratedColumn<String> template = GeneratedColumn<String>(
+    'template',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, languageSlug, template, updatedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'code_templates_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CodeTemplatesTableData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('language_slug')) {
+      context.handle(
+        _languageSlugMeta,
+        languageSlug.isAcceptableOrUnknown(
+          data['language_slug']!,
+          _languageSlugMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_languageSlugMeta);
+    }
+    if (data.containsKey('template')) {
+      context.handle(
+        _templateMeta,
+        template.isAcceptableOrUnknown(data['template']!, _templateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_templateMeta);
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CodeTemplatesTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CodeTemplatesTableData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      languageSlug: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}language_slug'],
+      )!,
+      template: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}template'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+    );
+  }
+
+  @override
+  $CodeTemplatesTableTable createAlias(String alias) {
+    return $CodeTemplatesTableTable(attachedDatabase, alias);
+  }
+}
+
+class CodeTemplatesTableData extends DataClass
+    implements Insertable<CodeTemplatesTableData> {
+  final int id;
+  final String languageSlug;
+  final String template;
+  final DateTime updatedAt;
+  const CodeTemplatesTableData({
+    required this.id,
+    required this.languageSlug,
+    required this.template,
+    required this.updatedAt,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['language_slug'] = Variable<String>(languageSlug);
+    map['template'] = Variable<String>(template);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    return map;
+  }
+
+  CodeTemplatesTableCompanion toCompanion(bool nullToAbsent) {
+    return CodeTemplatesTableCompanion(
+      id: Value(id),
+      languageSlug: Value(languageSlug),
+      template: Value(template),
+      updatedAt: Value(updatedAt),
+    );
+  }
+
+  factory CodeTemplatesTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CodeTemplatesTableData(
+      id: serializer.fromJson<int>(json['id']),
+      languageSlug: serializer.fromJson<String>(json['languageSlug']),
+      template: serializer.fromJson<String>(json['template']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'languageSlug': serializer.toJson<String>(languageSlug),
+      'template': serializer.toJson<String>(template),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+    };
+  }
+
+  CodeTemplatesTableData copyWith({
+    int? id,
+    String? languageSlug,
+    String? template,
+    DateTime? updatedAt,
+  }) => CodeTemplatesTableData(
+    id: id ?? this.id,
+    languageSlug: languageSlug ?? this.languageSlug,
+    template: template ?? this.template,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
+  CodeTemplatesTableData copyWithCompanion(CodeTemplatesTableCompanion data) {
+    return CodeTemplatesTableData(
+      id: data.id.present ? data.id.value : this.id,
+      languageSlug: data.languageSlug.present
+          ? data.languageSlug.value
+          : this.languageSlug,
+      template: data.template.present ? data.template.value : this.template,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CodeTemplatesTableData(')
+          ..write('id: $id, ')
+          ..write('languageSlug: $languageSlug, ')
+          ..write('template: $template, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, languageSlug, template, updatedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CodeTemplatesTableData &&
+          other.id == this.id &&
+          other.languageSlug == this.languageSlug &&
+          other.template == this.template &&
+          other.updatedAt == this.updatedAt);
+}
+
+class CodeTemplatesTableCompanion
+    extends UpdateCompanion<CodeTemplatesTableData> {
+  final Value<int> id;
+  final Value<String> languageSlug;
+  final Value<String> template;
+  final Value<DateTime> updatedAt;
+  const CodeTemplatesTableCompanion({
+    this.id = const Value.absent(),
+    this.languageSlug = const Value.absent(),
+    this.template = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+  });
+  CodeTemplatesTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String languageSlug,
+    required String template,
+    this.updatedAt = const Value.absent(),
+  }) : languageSlug = Value(languageSlug),
+       template = Value(template);
+  static Insertable<CodeTemplatesTableData> custom({
+    Expression<int>? id,
+    Expression<String>? languageSlug,
+    Expression<String>? template,
+    Expression<DateTime>? updatedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (languageSlug != null) 'language_slug': languageSlug,
+      if (template != null) 'template': template,
+      if (updatedAt != null) 'updated_at': updatedAt,
+    });
+  }
+
+  CodeTemplatesTableCompanion copyWith({
+    Value<int>? id,
+    Value<String>? languageSlug,
+    Value<String>? template,
+    Value<DateTime>? updatedAt,
+  }) {
+    return CodeTemplatesTableCompanion(
+      id: id ?? this.id,
+      languageSlug: languageSlug ?? this.languageSlug,
+      template: template ?? this.template,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (languageSlug.present) {
+      map['language_slug'] = Variable<String>(languageSlug.value);
+    }
+    if (template.present) {
+      map['template'] = Variable<String>(template.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CodeTemplatesTableCompanion(')
+          ..write('id: $id, ')
+          ..write('languageSlug: $languageSlug, ')
+          ..write('template: $template, ')
+          ..write('updatedAt: $updatedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -4134,6 +4440,8 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $UserProgressTableTable userProgressTable =
       $UserProgressTableTable(this);
   late final $NotesTableTable notesTable = $NotesTableTable(this);
+  late final $CodeTemplatesTableTable codeTemplatesTable =
+      $CodeTemplatesTableTable(this);
   late final ProblemDao problemDao = ProblemDao(this as AppDatabase);
   late final TopicTagDao topicTagDao = TopicTagDao(this as AppDatabase);
   late final SubmissionDao submissionDao = SubmissionDao(this as AppDatabase);
@@ -4141,6 +4449,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     this as AppDatabase,
   );
   late final NoteDao noteDao = NoteDao(this as AppDatabase);
+  late final CodeTemplateDao codeTemplateDao = CodeTemplateDao(
+    this as AppDatabase,
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -4153,6 +4464,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     submissionsTable,
     userProgressTable,
     notesTable,
+    codeTemplatesTable,
   ];
 }
 
@@ -7163,6 +7475,196 @@ typedef $$NotesTableTableProcessedTableManager =
       NotesTableData,
       PrefetchHooks Function()
     >;
+typedef $$CodeTemplatesTableTableCreateCompanionBuilder =
+    CodeTemplatesTableCompanion Function({
+      Value<int> id,
+      required String languageSlug,
+      required String template,
+      Value<DateTime> updatedAt,
+    });
+typedef $$CodeTemplatesTableTableUpdateCompanionBuilder =
+    CodeTemplatesTableCompanion Function({
+      Value<int> id,
+      Value<String> languageSlug,
+      Value<String> template,
+      Value<DateTime> updatedAt,
+    });
+
+class $$CodeTemplatesTableTableFilterComposer
+    extends Composer<_$AppDatabase, $CodeTemplatesTableTable> {
+  $$CodeTemplatesTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get languageSlug => $composableBuilder(
+    column: $table.languageSlug,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$CodeTemplatesTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $CodeTemplatesTableTable> {
+  $$CodeTemplatesTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get languageSlug => $composableBuilder(
+    column: $table.languageSlug,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get template => $composableBuilder(
+    column: $table.template,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CodeTemplatesTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CodeTemplatesTableTable> {
+  $$CodeTemplatesTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get languageSlug => $composableBuilder(
+    column: $table.languageSlug,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get template =>
+      $composableBuilder(column: $table.template, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+}
+
+class $$CodeTemplatesTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CodeTemplatesTableTable,
+          CodeTemplatesTableData,
+          $$CodeTemplatesTableTableFilterComposer,
+          $$CodeTemplatesTableTableOrderingComposer,
+          $$CodeTemplatesTableTableAnnotationComposer,
+          $$CodeTemplatesTableTableCreateCompanionBuilder,
+          $$CodeTemplatesTableTableUpdateCompanionBuilder,
+          (
+            CodeTemplatesTableData,
+            BaseReferences<
+              _$AppDatabase,
+              $CodeTemplatesTableTable,
+              CodeTemplatesTableData
+            >,
+          ),
+          CodeTemplatesTableData,
+          PrefetchHooks Function()
+        > {
+  $$CodeTemplatesTableTableTableManager(
+    _$AppDatabase db,
+    $CodeTemplatesTableTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CodeTemplatesTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CodeTemplatesTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CodeTemplatesTableTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> languageSlug = const Value.absent(),
+                Value<String> template = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => CodeTemplatesTableCompanion(
+                id: id,
+                languageSlug: languageSlug,
+                template: template,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String languageSlug,
+                required String template,
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => CodeTemplatesTableCompanion.insert(
+                id: id,
+                languageSlug: languageSlug,
+                template: template,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$CodeTemplatesTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CodeTemplatesTableTable,
+      CodeTemplatesTableData,
+      $$CodeTemplatesTableTableFilterComposer,
+      $$CodeTemplatesTableTableOrderingComposer,
+      $$CodeTemplatesTableTableAnnotationComposer,
+      $$CodeTemplatesTableTableCreateCompanionBuilder,
+      $$CodeTemplatesTableTableUpdateCompanionBuilder,
+      (
+        CodeTemplatesTableData,
+        BaseReferences<
+          _$AppDatabase,
+          $CodeTemplatesTableTable,
+          CodeTemplatesTableData
+        >,
+      ),
+      CodeTemplatesTableData,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -7181,4 +7683,6 @@ class $AppDatabaseManager {
       $$UserProgressTableTableTableManager(_db, _db.userProgressTable);
   $$NotesTableTableTableManager get notesTable =>
       $$NotesTableTableTableManager(_db, _db.notesTable);
+  $$CodeTemplatesTableTableTableManager get codeTemplatesTable =>
+      $$CodeTemplatesTableTableTableManager(_db, _db.codeTemplatesTable);
 }

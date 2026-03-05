@@ -28,9 +28,11 @@ import '../../features/editor/domain/repositories/note_repository.dart';
 import '../../features/editor/presentation/bloc/code_editor_bloc.dart';
 import '../../features/editor/presentation/bloc/code_execution_bloc.dart';
 import '../../features/editor/presentation/bloc/note_cubit.dart';
+import '../../features/settings/presentation/bloc/code_template_cubit.dart';
 import '../../features/submissions/presentation/bloc/submissions_bloc.dart';
 import '../constants/api_constants.dart';
 import '../database/app_database.dart';
+import '../database/daos/code_template_dao.dart';
 import '../database/daos/note_dao.dart';
 import '../database/daos/problem_dao.dart';
 import '../database/daos/submission_dao.dart';
@@ -113,6 +115,9 @@ Future<void> initDependencies() async {
     )
     ..registerLazySingleton<NoteDao>(
       () => NoteDao(sl<AppDatabase>()),
+    )
+    ..registerLazySingleton<CodeTemplateDao>(
+      () => CodeTemplateDao(sl<AppDatabase>()),
     );
 
   // ──── Feature: Auth ────
@@ -187,6 +192,7 @@ Future<void> initDependencies() async {
     ..registerFactory(
       () => CodeEditorBloc(
         getProblemDetail: sl<GetProblemDetailUseCase>(),
+        codeTemplateDao: sl<CodeTemplateDao>(),
       ),
     )
     ..registerFactory(
@@ -212,6 +218,11 @@ Future<void> initDependencies() async {
   // ──── Feature: Submissions ────
   sl.registerFactory(
     () => SubmissionsBloc(submissionDao: sl<SubmissionDao>()),
+  );
+
+  // ──── Feature: Settings ────
+  sl.registerFactory(
+    () => CodeTemplateCubit(codeTemplateDao: sl<CodeTemplateDao>()),
   );
 }
 

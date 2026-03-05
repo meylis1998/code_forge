@@ -9,6 +9,7 @@ import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'features/problems/domain/repositories/problem_repository.dart';
 import 'features/problems/presentation/bloc/problem_list_bloc.dart';
+import 'features/settings/presentation/bloc/code_template_cubit.dart';
 import 'features/settings/presentation/bloc/settings_cubit.dart';
 import 'features/submissions/presentation/bloc/submissions_bloc.dart';
 
@@ -48,6 +49,9 @@ class _CodeForgeAppState extends State<CodeForgeApp> {
         ),
         BlocProvider<SettingsCubit>(
           create: (_) => SettingsCubit(),
+        ),
+        BlocProvider<CodeTemplateCubit>(
+          create: (_) => sl<CodeTemplateCubit>()..loadTemplates(),
         ),
       ],
       child: BlocBuilder<SettingsCubit, SettingsState>(

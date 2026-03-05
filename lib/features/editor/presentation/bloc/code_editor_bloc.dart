@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/database/daos/code_template_dao.dart';
 import '../../../problems/domain/entities/problem_entity.dart';
 import '../../../problems/domain/usecases/get_problem_detail_usecase.dart';
 
@@ -11,7 +12,9 @@ part 'code_editor_state.dart';
 class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
   CodeEditorBloc({
     required GetProblemDetailUseCase getProblemDetail,
+    required CodeTemplateDao codeTemplateDao,
   })  : _getProblemDetail = getProblemDetail,
+        _codeTemplateDao = codeTemplateDao,
         super(const CodeEditorState()) {
     on<CodeEditorLoadProblem>(_onLoadProblem);
     on<CodeEditorLanguageChanged>(_onLanguageChanged);
@@ -21,6 +24,7 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
   }
 
   final GetProblemDetailUseCase _getProblemDetail;
+  final CodeTemplateDao _codeTemplateDao;
 
   Future<void> _onLoadProblem(
     CodeEditorLoadProblem event,
@@ -30,33 +34,49 @@ class CodeEditorBloc extends Bloc<CodeEditorEvent, CodeEditorState> {
 
     final result = await _getProblemDetail(event.titleSlug);
 
-    result.fold(
-      (failure) => emit(
-        state.copyWith(
-          status: CodeEditorStatus.error,
-          errorMessage: failure.message,
-        ),
-      ),
-      (problem) {
-        final defaultLang = AppConstants.defaultLanguage;
-        final snippet = problem.codeSnippets.isNotEmpty
-            ? problem.codeSnippets.firstWhere(
-                (s) => s.langSlug == defaultLang,
-                orElse: () => problem.codeSnippets.first,
-              )
-            : null;
-
-        emit(
+    if (result.isLeft()) {
+      result.fold(
+        (failure) => emit(
           state.copyWith(
-            status: CodeEditorStatus.loaded,
-            problem: problem,
-            selectedLanguage: snippet?.langSlug ?? defaultLang,
-            code: snippet?.code ?? '',
-            originalCode: snippet?.code ?? '',
-            testCases: problem.sampleTestCase ?? problem.exampleTestcases ?? '',
+            status: CodeEditorStatus.error,
+            errorMessage: failure.message,
           ),
-        );
-      },
+        ),
+        (_) {},
+      );
+      return;
+    }
+
+    final problem = result.getOrElse(
+      () => throw StateError('Expected Right'),
+    );
+
+    final defaultLang = AppConstants.defaultLanguage;
+    final snippet = problem.codeSnippets.isNotEmpty
+        ? problem.codeSnippets.firstWhere(
+            (s) => s.langSlug == defaultLang,
+            orElse: () => problem.codeSnippets.first,
+          )
+        : null;
+
+    final langSlug = snippet?.langSlug ?? defaultLang;
+    final snippetCode = snippet?.code ?? '';
+
+    // Prepend code template if one exists for this language
+    final templateData = await _codeTemplateDao.getTemplate(langSlug);
+    final code = templateData != null && templateData.template.isNotEmpty
+        ? '${templateData.template}\n\n$snippetCode'
+        : snippetCode;
+
+    emit(
+      state.copyWith(
+        status: CodeEditorStatus.loaded,
+        problem: problem,
+        selectedLanguage: langSlug,
+        code: code,
+        originalCode: snippetCode,
+        testCases: problem.sampleTestCase ?? problem.exampleTestcases ?? '',
+      ),
     );
   }
 

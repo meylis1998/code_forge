@@ -7,7 +7,9 @@ import '../../../../core/theme/color_palette.dart';
 import '../../../../core/theme/editor_theme.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../auth/presentation/widgets/login_dialog.dart';
+import '../bloc/code_template_cubit.dart';
 import '../bloc/settings_cubit.dart';
+import '../widgets/code_template_editor_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -259,6 +261,73 @@ class SettingsPage extends StatelessWidget {
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 32),
+                  // Code Templates section
+                  _SectionHeader(title: 'Code Templates'),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Boilerplate code prepended when starting a new problem',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 12),
+                  BlocBuilder<CodeTemplateCubit, CodeTemplateState>(
+                    builder: (context, state) {
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            children: LeetCodeLanguages.all
+                                .map((lang) {
+                                  final hasTemplate = state.templates.any(
+                                    (t) => t.languageSlug == lang.slug,
+                                  );
+                                  return _SettingsRow(
+                                    label: lang.name,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (hasTemplate)
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 8),
+                                            child: Icon(
+                                              CupertinoIcons
+                                                  .checkmark_circle_fill,
+                                              size: 14,
+                                              color: ColorPalette.accepted,
+                                            ),
+                                          ),
+                                        OutlinedButton(
+                                          onPressed: () {
+                                            final existing =
+                                                context
+                                                    .read<CodeTemplateCubit>()
+                                                    .getTemplate(lang.slug) ??
+                                                '';
+                                            CodeTemplateEditorDialog.show(
+                                              context,
+                                              language: lang,
+                                              initialTemplate: existing,
+                                            );
+                                          },
+                                          child: Text(
+                                            hasTemplate ? 'Edit' : 'Add',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                })
+                                .expand(
+                                  (widget) => [widget, const Divider()],
+                                )
+                                .toList()
+                              ..removeLast(),
                           ),
                         ),
                       );

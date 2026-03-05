@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:code_forge/core/errors/failures.dart';
 import 'package:code_forge/features/problems/domain/entities/problem_entity.dart';
+import 'package:code_forge/core/database/daos/code_template_dao.dart';
 import 'package:code_forge/features/problems/domain/usecases/get_problem_detail_usecase.dart';
 import 'package:code_forge/features/editor/presentation/bloc/code_editor_bloc.dart';
 import 'package:dartz/dartz.dart';
@@ -10,13 +11,22 @@ import 'package:mocktail/mocktail.dart';
 class MockGetProblemDetailUseCase extends Mock
     implements GetProblemDetailUseCase {}
 
+class MockCodeTemplateDao extends Mock implements CodeTemplateDao {}
+
 void main() {
   late CodeEditorBloc bloc;
   late MockGetProblemDetailUseCase mockGetProblemDetail;
+  late MockCodeTemplateDao mockCodeTemplateDao;
 
   setUp(() {
     mockGetProblemDetail = MockGetProblemDetailUseCase();
-    bloc = CodeEditorBloc(getProblemDetail: mockGetProblemDetail);
+    mockCodeTemplateDao = MockCodeTemplateDao();
+    when(() => mockCodeTemplateDao.getTemplate(any()))
+        .thenAnswer((_) async => null);
+    bloc = CodeEditorBloc(
+      getProblemDetail: mockGetProblemDetail,
+      codeTemplateDao: mockCodeTemplateDao,
+    );
   });
 
   tearDown(() => bloc.close());
