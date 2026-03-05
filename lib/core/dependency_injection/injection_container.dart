@@ -19,6 +19,8 @@ import '../../features/problems/domain/usecases/get_problem_detail_usecase.dart'
 import '../../features/problems/domain/usecases/get_problems_usecase.dart';
 import '../../features/problems/domain/usecases/get_tags_usecase.dart';
 import '../../features/problems/presentation/bloc/problem_list_bloc.dart';
+import '../../features/contests/data/datasources/contest_remote_data_source.dart';
+import '../../features/contests/presentation/bloc/contest_bloc.dart';
 import '../../features/dashboard/data/datasources/dashboard_remote_data_source.dart';
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../../features/editor/data/repositories/code_execution_repository_impl.dart';
@@ -217,6 +219,15 @@ Future<void> initDependencies() async {
       () => DashboardBloc(
         remoteDataSource: sl<DashboardRemoteDataSource>(),
       ),
+    );
+
+  // ──── Feature: Contests ────
+  sl
+    ..registerLazySingleton(
+      () => ContestRemoteDataSource(sl<LeetCodeApiClient>()),
+    )
+    ..registerFactory(
+      () => ContestBloc(remoteDataSource: sl<ContestRemoteDataSource>()),
     );
 
   // ──── Feature: Submissions ────

@@ -6,6 +6,7 @@ import 'core/dependency_injection/injection_container.dart';
 import 'core/navigation/app_routes.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/contests/presentation/bloc/contest_bloc.dart';
 import 'features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'features/problems/domain/repositories/problem_repository.dart';
 import 'features/problems/presentation/bloc/problem_list_bloc.dart';
@@ -46,6 +47,9 @@ class _CodeForgeAppState extends State<CodeForgeApp> {
         ),
         BlocProvider<SubmissionsBloc>(
           create: (_) => sl<SubmissionsBloc>()..add(SubmissionsLoaded()),
+        ),
+        BlocProvider<ContestBloc>(
+          create: (_) => sl<ContestBloc>()..add(ContestsLoaded()),
         ),
         BlocProvider<SettingsCubit>(
           create: (_) => SettingsCubit(),

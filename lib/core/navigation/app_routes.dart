@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../features/contests/presentation/pages/contests_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/editor/presentation/pages/solve_page.dart';
 import '../../features/problems/presentation/pages/problems_page.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String problemDetail = '/problems/:slug';
   static const String dashboard = '/dashboard';
   static const String submissions = '/submissions';
+  static const String contests = '/contests';
   static const String settings = '/settings';
 
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -57,6 +59,15 @@ class AppRoutes {
                 path: submissions,
                 name: 'submissions',
                 builder: (context, state) => const SubmissionsPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: contests,
+                name: 'contests',
+                builder: (context, state) => const ContestsPage(),
               ),
             ],
           ),
