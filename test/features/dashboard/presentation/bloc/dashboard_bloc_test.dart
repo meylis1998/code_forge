@@ -41,6 +41,33 @@ void main() {
     acRate: 52.3,
   );
 
+  const tContestStats = ContestStats(
+    rating: 1500,
+    globalRanking: 5000,
+    attendedContestsCount: 10,
+  );
+
+  const tLanguageStats = [
+    LanguageStat(languageName: 'Python', problemsSolved: 50),
+    LanguageStat(languageName: 'Java', problemsSolved: 30),
+  ];
+
+  const tSkillStats = SkillStats(
+    fundamental: [
+      TagSkill(tagName: 'Array', tagSlug: 'array', problemsSolved: 20),
+    ],
+  );
+
+  /// Helper to stub all supplementary data source methods
+  void stubSupplementaryMethods() {
+    when(() => mockDataSource.getContestStats('testuser'))
+        .thenAnswer((_) async => tContestStats);
+    when(() => mockDataSource.getLanguageStats('testuser'))
+        .thenAnswer((_) async => tLanguageStats);
+    when(() => mockDataSource.getSkillStats('testuser'))
+        .thenAnswer((_) async => tSkillStats);
+  }
+
   test('initial state is correct', () {
     expect(bloc.state.status, DashboardStatus.initial);
     expect(bloc.state.stats, isNull);
@@ -54,16 +81,56 @@ void main() {
             .thenAnswer((_) async => tStats);
         when(() => mockDataSource.getDailyChallenge())
             .thenAnswer((_) async => tDailyChallenge);
+        stubSupplementaryMethods();
         return bloc;
       },
       act: (bloc) => bloc.add(const DashboardLoaded('testuser')),
       expect: () => [
         const DashboardState(status: DashboardStatus.loading),
-        const DashboardState(
-          status: DashboardStatus.loaded,
-          stats: tStats,
-          dailyChallenge: tDailyChallenge,
-        ),
+        isA<DashboardState>()
+            .having((s) => s.status, 'status', DashboardStatus.loaded)
+            .having((s) => s.stats, 'stats', tStats)
+            .having(
+              (s) => s.dailyChallenge,
+              'dailyChallenge',
+              tDailyChallenge,
+            )
+            .having(
+              (s) => s.contestStats,
+              'contestStats',
+              tContestStats,
+            )
+            .having(
+              (s) => s.languageStats,
+              'languageStats',
+              tLanguageStats,
+            )
+            .having((s) => s.skillStats, 'skillStats', tSkillStats),
+      ],
+    );
+
+    blocTest<DashboardBloc, DashboardState>(
+      'emits loaded even when supplementary calls fail',
+      build: () {
+        when(() => mockDataSource.getUserStats('testuser'))
+            .thenAnswer((_) async => tStats);
+        when(() => mockDataSource.getDailyChallenge())
+            .thenAnswer((_) async => tDailyChallenge);
+        when(() => mockDataSource.getContestStats('testuser'))
+            .thenThrow(Exception('Contest error'));
+        when(() => mockDataSource.getLanguageStats('testuser'))
+            .thenThrow(Exception('Language error'));
+        when(() => mockDataSource.getSkillStats('testuser'))
+            .thenThrow(Exception('Skill error'));
+        return bloc;
+      },
+      act: (bloc) => bloc.add(const DashboardLoaded('testuser')),
+      expect: () => [
+        const DashboardState(status: DashboardStatus.loading),
+        isA<DashboardState>()
+            .having((s) => s.status, 'status', DashboardStatus.loaded)
+            .having((s) => s.stats, 'stats', tStats)
+            .having((s) => s.contestStats, 'contestStats', isNull),
       ],
     );
 
@@ -117,6 +184,7 @@ void main() {
             .thenAnswer((_) async => tStats);
         when(() => mockDataSource.getDailyChallenge())
             .thenAnswer((_) async => tDailyChallenge);
+        stubSupplementaryMethods();
         return bloc;
       },
       seed: () => const DashboardState(
