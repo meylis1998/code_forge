@@ -3,6 +3,7 @@ import 'dart:convert';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/graphql_queries.dart';
 import '../../../../core/network/leetcode_api_client.dart';
+import '../../../editor/domain/entities/solution.dart';
 import '../../domain/entities/problem_entity.dart';
 
 class ProblemRemoteDataSource {
@@ -162,6 +163,35 @@ class ProblemRemoteDataSource {
         rethrow;
       }
       throw ServerException(message: 'Failed to fetch problem detail: $e');
+    }
+  }
+
+  Future<Solution?> getSolution(String titleSlug) async {
+    try {
+      final response = await _apiClient.graphql(
+        query: GraphQLQueries.officialSolution,
+        variables: {'titleSlug': titleSlug},
+      );
+
+      final data = response['data'] as Map<String, dynamic>?;
+      final question = data?['question'] as Map<String, dynamic>?;
+      final solution = question?['solution'] as Map<String, dynamic>?;
+
+      if (solution == null) return null;
+
+      return Solution(
+        id: solution['id'] as int? ?? 0,
+        title: solution['title'] as String? ?? '',
+        content: solution['content'] as String? ?? '',
+        isPaidOnly: solution['paidOnly'] as bool? ?? false,
+        hasVideoSolution: solution['hasVideoSolution'] as bool? ?? false,
+        canSeeDetail: solution['canSeeDetail'] as bool? ?? true,
+      );
+    } catch (e) {
+      if (e is ServerException || e is NetworkException || e is AuthException) {
+        rethrow;
+      }
+      throw ServerException(message: 'Failed to fetch solution: $e');
     }
   }
 

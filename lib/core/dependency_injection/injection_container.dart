@@ -28,6 +28,7 @@ import '../../features/editor/domain/repositories/note_repository.dart';
 import '../../features/editor/presentation/bloc/code_editor_bloc.dart';
 import '../../features/editor/presentation/bloc/code_execution_bloc.dart';
 import '../../features/editor/presentation/bloc/note_cubit.dart';
+import '../../features/editor/presentation/bloc/solution_cubit.dart';
 import '../../features/settings/presentation/bloc/code_template_cubit.dart';
 import '../../features/submissions/presentation/bloc/submissions_bloc.dart';
 import '../constants/api_constants.dart';
@@ -202,6 +203,9 @@ Future<void> initDependencies() async {
     )
     ..registerFactory(
       () => NoteCubit(noteRepository: sl<NoteRepository>()),
+    )
+    ..registerFactory(
+      () => SolutionCubit(problemRepository: sl<ProblemRepository>()),
     );
 
   // ──── Feature: Dashboard ────

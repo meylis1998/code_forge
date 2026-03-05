@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network/network_info.dart';
+import '../../../editor/domain/entities/solution.dart';
 import '../../domain/entities/problem_entity.dart';
 import '../../domain/entities/problem_filter.dart';
 import '../../domain/repositories/problem_repository.dart';
@@ -157,6 +158,23 @@ class ProblemRepositoryImpl implements ProblemRepository {
       return const Right(null);
     } on CacheException catch (e) {
       return Left(CacheFailure(message: e.message));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Solution?>> getSolution(String titleSlug) async {
+    try {
+      if (!await networkInfo.isConnected) {
+        return const Left(NetworkFailure(message: 'No internet connection'));
+      }
+      final solution = await remoteDataSource.getSolution(titleSlug);
+      return Right(solution);
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } on AuthException catch (e) {
+      return Left(AuthFailure(message: e.message));
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(message: e.message));
     }
   }
 }

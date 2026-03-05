@@ -10,6 +10,7 @@ import '../../../../shared/widgets/loading_widget.dart';
 import '../../../../shared/widgets/split_view.dart';
 import '../bloc/code_editor_bloc.dart';
 import '../bloc/note_cubit.dart';
+import '../bloc/solution_cubit.dart';
 import '../widgets/code_editor_panel.dart';
 import '../widgets/problem_description_panel.dart';
 
@@ -27,6 +28,7 @@ class SolvePage extends StatelessWidget {
               sl<CodeEditorBloc>()..add(CodeEditorLoadProblem(titleSlug)),
         ),
         BlocProvider(create: (_) => sl<NoteCubit>()),
+        BlocProvider(create: (_) => sl<SolutionCubit>()),
       ],
       child: _SolvePageContent(titleSlug: titleSlug),
     );

@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import '../../../../core/theme/color_palette.dart';
 import '../../../problems/domain/entities/problem_entity.dart';
+import '../bloc/solution_cubit.dart';
 import 'notes_panel.dart';
 
 class ProblemDescriptionPanel extends StatelessWidget {
@@ -19,7 +21,7 @@ class ProblemDescriptionPanel extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -122,6 +124,7 @@ class ProblemDescriptionPanel extends StatelessWidget {
           TabBar(
             tabs: const [
               Tab(text: 'Description'),
+              Tab(text: 'Solution'),
               Tab(text: 'Notes'),
             ],
             labelStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -175,6 +178,8 @@ class ProblemDescriptionPanel extends StatelessWidget {
                       ],
                     ),
                   ),
+                // Solution tab
+                _SolutionTab(titleSlug: problem.titleSlug),
                 // Notes tab
                 NotesPanel(problemId: problem.id),
               ],
@@ -182,6 +187,126 @@ class ProblemDescriptionPanel extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SolutionTab extends StatefulWidget {
+  const _SolutionTab({required this.titleSlug});
+
+  final String titleSlug;
+
+  @override
+  State<_SolutionTab> createState() => _SolutionTabState();
+}
+
+class _SolutionTabState extends State<_SolutionTab> {
+  bool _loaded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return BlocBuilder<SolutionCubit, SolutionState>(
+      builder: (context, state) {
+        // Lazy load on first view
+        if (!_loaded && state.status == SolutionStatus.initial) {
+          _loaded = true;
+          context.read<SolutionCubit>().loadSolution(widget.titleSlug);
+        }
+
+        switch (state.status) {
+          case SolutionStatus.initial:
+          case SolutionStatus.loading:
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          case SolutionStatus.error:
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    CupertinoIcons.exclamationmark_circle,
+                    size: 48,
+                    color: isDark
+                        ? ColorPalette.darkTextSecondary
+                        : ColorPalette.lightTextSecondary,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    state.errorMessage ?? 'Failed to load solution',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => context
+                        .read<SolutionCubit>()
+                        .loadSolution(widget.titleSlug),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          case SolutionStatus.loaded:
+            if (state.solution == null) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.doc_text,
+                      size: 48,
+                      color: isDark
+                          ? ColorPalette.darkTextSecondary
+                          : ColorPalette.lightTextSecondary,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No official solution available',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (state.solution!.isPaidOnly && !state.solution!.canSeeDetail) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.lock_fill,
+                      size: 48,
+                      color: isDark
+                          ? ColorPalette.darkTextSecondary
+                          : ColorPalette.lightTextSecondary,
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Premium solution',
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'This solution requires a LeetCode Premium subscription',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: HtmlWidget(
+                state.solution!.content,
+                textStyle: Theme.of(context).textTheme.bodyMedium,
+              ),
+            );
+        }
+      },
     );
   }
 }
