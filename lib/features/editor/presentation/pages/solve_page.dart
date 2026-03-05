@@ -9,6 +9,7 @@ import '../../../../shared/widgets/error_widget.dart';
 import '../../../../shared/widgets/loading_widget.dart';
 import '../../../../shared/widgets/split_view.dart';
 import '../bloc/code_editor_bloc.dart';
+import '../bloc/note_cubit.dart';
 import '../widgets/code_editor_panel.dart';
 import '../widgets/problem_description_panel.dart';
 
@@ -19,9 +20,14 @@ class SolvePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) =>
-          sl<CodeEditorBloc>()..add(CodeEditorLoadProblem(titleSlug)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) =>
+              sl<CodeEditorBloc>()..add(CodeEditorLoadProblem(titleSlug)),
+        ),
+        BlocProvider(create: (_) => sl<NoteCubit>()),
+      ],
       child: _SolvePageContent(titleSlug: titleSlug),
     );
   }
@@ -104,9 +110,15 @@ class _SolvePageContent extends StatelessWidget {
               ),
               // Content
               Expanded(
-                child: BlocBuilder<CodeEditorBloc, CodeEditorState>(
+                child: BlocConsumer<CodeEditorBloc, CodeEditorState>(
                   buildWhen: (previous, current) =>
                       previous.status != current.status,
+                  listenWhen: (previous, current) =>
+                      previous.status != current.status &&
+                      current.status == CodeEditorStatus.loaded,
+                  listener: (context, state) {
+                    context.read<NoteCubit>().loadNote(state.problem!.id);
+                  },
                   builder: (context, state) {
                     switch (state.status) {
                       case CodeEditorStatus.initial:

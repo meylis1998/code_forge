@@ -22,12 +22,16 @@ import '../../features/problems/presentation/bloc/problem_list_bloc.dart';
 import '../../features/dashboard/data/datasources/dashboard_remote_data_source.dart';
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../../features/editor/data/repositories/code_execution_repository_impl.dart';
+import '../../features/editor/data/repositories/note_repository_impl.dart';
 import '../../features/editor/domain/repositories/code_execution_repository.dart';
+import '../../features/editor/domain/repositories/note_repository.dart';
 import '../../features/editor/presentation/bloc/code_editor_bloc.dart';
 import '../../features/editor/presentation/bloc/code_execution_bloc.dart';
+import '../../features/editor/presentation/bloc/note_cubit.dart';
 import '../../features/submissions/presentation/bloc/submissions_bloc.dart';
 import '../constants/api_constants.dart';
 import '../database/app_database.dart';
+import '../database/daos/note_dao.dart';
 import '../database/daos/problem_dao.dart';
 import '../database/daos/submission_dao.dart';
 import '../database/daos/topic_tag_dao.dart';
@@ -106,6 +110,9 @@ Future<void> initDependencies() async {
     )
     ..registerLazySingleton<UserProgressDao>(
       () => UserProgressDao(sl<AppDatabase>()),
+    )
+    ..registerLazySingleton<NoteDao>(
+      () => NoteDao(sl<AppDatabase>()),
     );
 
   // ──── Feature: Auth ────
@@ -174,6 +181,9 @@ Future<void> initDependencies() async {
         submissionDao: sl<SubmissionDao>(),
       ),
     )
+    ..registerLazySingleton<NoteRepository>(
+      () => NoteRepositoryImpl(noteDao: sl<NoteDao>()),
+    )
     ..registerFactory(
       () => CodeEditorBloc(
         getProblemDetail: sl<GetProblemDetailUseCase>(),
@@ -183,6 +193,9 @@ Future<void> initDependencies() async {
       () => CodeExecutionBloc(
         repository: sl<CodeExecutionRepository>(),
       ),
+    )
+    ..registerFactory(
+      () => NoteCubit(noteRepository: sl<NoteRepository>()),
     );
 
   // ──── Feature: Dashboard ────
